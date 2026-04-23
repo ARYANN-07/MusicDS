@@ -12,35 +12,5 @@ In-Memory Nature: Currently, the C++ backend operates entirely in RAM. Data is v
 2. Folder Structure
 The project is split into two distinct ecosystems within the same repository:
 MusicDS-V/
-├── backend/                     # THE C++ DATA ENGINE
-│   ├── build/                   # Compiled executable (musicds-backend.exe)
-│   ├── data-structures/         # The core C++ logic
-│   │   ├── avl_tree.cpp / .h    # Handles user profiles
-│   │   ├── red_black_tree...    # Handles top charts
-│   │   └── fibonacci_heap...    # Handles recommendations
-│   ├── httplib.h / json.hpp     # Dependencies (older/unused versions)
-│   ├── simple_http.h            # Custom, zero-dependency Winsock2 HTTP Server
-│   ├── main.cpp                 # Entry point: Registers API routes & starts server
-│   └── CMakeLists.txt           # Build configuration
-│
-├── app/                         # NEXT.JS APP ROUTER (FRONTEND UI)
-│   ├── api/backend/[...path]/   # Proxy route bypassing CORS to talk to C++
-│   ├── layout.tsx               # Global HTML wrapper
-│   └── page.tsx                 # Main UI entry point
-│
-├── components/                  # REACT UI COMPONENTS
-│   ├── player.tsx               # The bottom audio player bar
-│   ├── search-bar.tsx           # Search input
-│   ├── sidebar.tsx              # Left navigation
-│   ├── song-card.tsx            # Individual song UI
-│   └── song-sections.tsx        # Grids for "Recommendations", "Charts", etc.
-│
-├── lib/                         # FRONTEND STATE & LOGIC
-│   ├── data-structures/         
-│   │   └── threaded-bst.ts      # TypeScript Threaded BST for Playlist Queue
-│   ├── audio-context.tsx        # React Context managing the <audio> element
-│   ├── music-context.tsx        # React Context acting as the glue to the C++ API
-│   ├── itunes-api.ts            # Fetches raw JSON data from Apple
-│   └── types.ts                 # Shared TypeScript interfaces
-│
-└── tsconfig.json, package.json  # Node.js project configs
+
+<img width="858" height="671" alt="image" src="https://github.com/user-attachments/assets/255c17fe-de61-4aa2-8afb-8ae38be28f00" />
