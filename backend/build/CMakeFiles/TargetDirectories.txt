@@ -1,0 +1,3 @@
+C:/Users/Aryan_/Desktop/MusicDS-V/backend/build/CMakeFiles/musicds-backend.dir
+C:/Users/Aryan_/Desktop/MusicDS-V/backend/build/CMakeFiles/edit_cache.dir
+C:/Users/Aryan_/Desktop/MusicDS-V/backend/build/CMakeFiles/rebuild_cache.dir
