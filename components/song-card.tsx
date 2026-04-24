@@ -60,6 +60,12 @@ export function SongCard({ song, showPlayCount, rank, variant = 'default' }: Son
               src={song.artworkUrl100}
               alt={song.trackName}
               className="w-full h-full rounded object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                if (target.src.includes('400x400')) {
+                  target.src = target.src.replace('400x400', '100x100');
+                }
+              }}
             />
           ) : (
             <div className="w-full h-full rounded bg-secondary" />
@@ -113,6 +119,12 @@ export function SongCard({ song, showPlayCount, rank, variant = 'default' }: Son
               src={song.artworkUrl100}
               alt={song.trackName}
               className="w-full h-full rounded object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                if (target.src.includes('400x400')) {
+                  target.src = target.src.replace('400x400', '100x100');
+                }
+              }}
             />
           ) : (
             <div className="w-full h-full rounded bg-secondary" />
@@ -156,6 +168,12 @@ export function SongCard({ song, showPlayCount, rank, variant = 'default' }: Son
             src={song.artworkUrl100}
             alt={song.trackName}
             className="w-full h-full rounded-md object-cover"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              if (target.src.includes('400x400')) {
+                target.src = target.src.replace('400x400', '100x100');
+              }
+            }}
           />
         ) : (
           <div className="w-full h-full rounded-md bg-secondary" />

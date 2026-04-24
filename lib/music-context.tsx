@@ -94,6 +94,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const onboarded = localStorage.getItem(STORAGE_KEY_ONBOARDED);
+    // Initially set from localStorage, but we will verify with backend
     setHasOnboarded(onboarded === 'true');
 
     const savedGenres = localStorage.getItem(STORAGE_KEY_GENRES);
@@ -109,6 +110,14 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       const prefs = await backendGet<UserPreferences>('api/preferences/default');
       if (prefs?.selectedGenres?.length) {
         setSelectedGenresState(prefs.selectedGenres);
+        setHasOnboarded(true);
+      } else {
+        // Backend is in-memory and has restarted/lost data.
+        // Force onboarding again.
+        setHasOnboarded(false);
+        setSelectedGenresState([]);
+        localStorage.removeItem(STORAGE_KEY_ONBOARDED);
+        localStorage.removeItem(STORAGE_KEY_GENRES);
       }
     })();
   }, [backendAvailable]);

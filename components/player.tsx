@@ -42,6 +42,12 @@ export function Player() {
             src={currentSong.artworkUrl100}
             alt={currentSong.trackName}
             className="w-14 h-14 rounded object-cover"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              if (target.src.includes('400x400')) {
+                target.src = target.src.replace('400x400', '100x100');
+              }
+            }}
           />
         ) : (
           <div className="w-14 h-14 rounded bg-secondary" />

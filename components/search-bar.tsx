@@ -117,6 +117,12 @@ export function SearchBar({ onFocus }: SearchBarProps) {
                       src={song.artworkUrl100}
                       alt={song.trackName}
                       className="w-10 h-10 rounded object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        if (target.src.includes('400x400')) {
+                          target.src = target.src.replace('400x400', '100x100');
+                        }
+                      }}
                     />
                   ) : (
                     <div className="w-10 h-10 rounded bg-secondary flex items-center justify-center">
