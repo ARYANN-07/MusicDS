@@ -1,0 +1,334 @@
+{
+  "playlists": {
+    "patil": {
+      "__liked__": [
+        {
+          "artistName": "Michael Jackson",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/32/4f/fd/324ffda2-9e51-8f6a-0c2d-c6fd2b41ac55/074643811224.jpg/400x400bb.jpg",
+          "collectionName": "Thriller",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/dc/bc/8a/dcbc8a3e-4ce1-c00d-cc02-eda2212053c7/mzaf_8347559338388601510.plus.aac.p.m4a",
+          "primaryGenreName": "Pop",
+          "trackId": 269573364,
+          "trackName": "Billie Jean",
+          "trackTimeMillis": 293802
+        }
+      ]
+    },
+    "testuser": {
+      "__liked__": [
+        {
+          "artistName": "Taylor Swift",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2d/46/e0/2d46e0bc-8ab9-85dd-4b56-ee6951351034/25UM1IM19577.rgb.jpg/400x400bb.jpg",
+          "collectionName": "The Life of a Showgirl",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/69/ea/d8/69ead898-7583-9bca-8be9-5f4e2140783f/mzaf_6210909912602321477.plus.aac.p.m4a",
+          "primaryGenreName": "Pop",
+          "trackId": 1833328845,
+          "trackName": "Opalite",
+          "trackTimeMillis": 235356
+        },
+        {
+          "artistName": "Taylor Swift",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/49/3d/ab/493dab54-f920-9043-6181-80993b8116c9/19UMGIM53909.rgb.jpg/400x400bb.jpg",
+          "collectionName": "Lover",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e8/80/4f/e8804fa1-6118-74fd-4602-b96969ebef41/mzaf_5457103975229379192.plus.aac.p.m4a",
+          "primaryGenreName": "Pop",
+          "trackId": 1468058704,
+          "trackName": "You Need To Calm Down",
+          "trackTimeMillis": 171352
+        },
+        {
+          "artistName": "Nat \"King\" Cole",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/dc/c6/f9/dcc6f961-e32c-cc95-917b-5c6326b5316f/18UMGIM66445.rgb.jpg/400x400bb.jpg",
+          "collectionName": "Christmas Top Hits",
+          "playCount": 88,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e6/23/a8/e623a8c0-566a-20e8-5aa2-792e5f204a09/mzaf_4012363789468527762.plus.aac.p.m4a",
+          "primaryGenreName": "Holiday",
+          "trackId": 1438301147,
+          "trackName": "Joy To the World (Remastered 1999)",
+          "trackTimeMillis": 84067
+        },
+        {
+          "artistName": "Bad Bunny",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/09/aa/f8/09aaf8da-8eaf-bf60-0c23-48a88d546cbd/26991.jpg/400x400bb.jpg",
+          "collectionName": "MIA (feat. Drake) - Single",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/50/eb/25/50eb2545-e400-fb43-6ff7-101f9bd429f2/mzaf_7089771968275109381.plus.aac.p.m4a",
+          "primaryGenreName": "Latin",
+          "trackId": 1662168786,
+          "trackName": "MIA (feat. Drake)",
+          "trackTimeMillis": 210368
+        },
+        {
+          "artistName": "Drake",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/95/f5/87/95f587f7-21c3-d5f9-d81a-4350f9caa020/16UMGIM27643.rgb.jpg/400x400bb.jpg",
+          "collectionName": "Views",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/9f/ce/31/9fce31a8-2363-2ed1-8aba-02532737f55a/mzaf_5942699190158325867.plus.aac.p.m4a",
+          "primaryGenreName": "Hip-Hop/Rap",
+          "trackId": 1440843496,
+          "trackName": "One Dance (feat. Wizkid & Kyla)",
+          "trackTimeMillis": 173985
+        },
+        {
+          "artistName": "Drake",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/bb/6d/8f/bb6d8f67-6d04-10b5-dd62-eb5809ac54fc/00602567879152.rgb.jpg/400x400bb.jpg",
+          "collectionName": "Scorpion",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/1e/f0/ab/1ef0ab07-f9b6-ae6a-aad3-a7d63374e97f/mzaf_10070588351983905539.plus.aac.p.m4a",
+          "primaryGenreName": "Hip-Hop/Rap",
+          "trackId": 1406109901,
+          "trackName": "In My Feelings",
+          "trackTimeMillis": 217925
+        },
+        {
+          "artistName": "Frank Ocean",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/8d/76/23/8d76234b-5101-fa9b-58b3-5e17645d5b05/00602527744209.rgb.jpg/400x400bb.jpg",
+          "collectionName": "Novacane - Single",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/75/bd/22/75bd222f-2d7c-670d-065b-d85830f3de2f/mzaf_13118491895806362699.plus.aac.p.m4a",
+          "primaryGenreName": "Alternative",
+          "trackId": 1445278502,
+          "trackName": "Novacane",
+          "trackTimeMillis": 302707
+        },
+        {
+          "artistName": "Tom Waits",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/b9/c8/ea/b9c8eac9-0f83-f194-7de6-f68d21b5ed1f/0045778654734.png/400x400bb.jpg",
+          "collectionName": "Mule Variations (Remastered)",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/1d/81/24/1d8124c0-d881-3472-3b10-ab2a77af3a1a/mzaf_10958614639470568174.plus.aac.p.m4a",
+          "primaryGenreName": "Alternative",
+          "trackId": 1485070857,
+          "trackName": "Come On Up to the House",
+          "trackTimeMillis": 276906
+        },
+        {
+          "artistName": "Travis Scott",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/b8/e5/27/b8e527c8-aaf4-c7b7-5562-c479458ed7d9/886446092645.jpg/400x400bb.jpg",
+          "collectionName": "Birds In The Trap Sing McKnight",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/03/0a/ae/030aaeb0-a9fc-280e-c33c-e02d0b95264c/mzaf_13068295871760308152.plus.aac.p.m4a",
+          "primaryGenreName": "Hip-Hop/Rap",
+          "trackId": 1151481750,
+          "trackName": "goosebumps",
+          "trackTimeMillis": 243837
+        },
+        {
+          "artistName": "Madan Maddi & Sukshinder Shinda",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music/fc/9f/46/mzi.wkdfpphx.tif/400x400bb.jpg",
+          "collectionName": "Moving & Grooving",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/7d/fe/3f/7dfe3f99-ae02-dbbf-c9f6-31d3e7287f93/mzaf_1945517885294220282.plus.aac.p.m4a",
+          "primaryGenreName": "Worldwide",
+          "trackId": 253647823,
+          "trackName": "Bolve",
+          "trackTimeMillis": 312467
+        },
+        {
+          "artistName": "Surinder Kaur & Dixit",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/22/f1/64/22f164d1-71bb-4671-a583-fc6d693a1733/197186981633.jpg/400x400bb.jpg",
+          "collectionName": "Punjabi Retro Trap Mix - EP",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/10/b0/c8/10b0c894-27ac-6ff4-52d4-a1e1dfda1c82/mzaf_6620165910560116073.plus.aac.p.m4a",
+          "primaryGenreName": "Indian Pop",
+          "trackId": 1643835935,
+          "trackName": "Ek Meri Akh Kashni Trap Mix",
+          "trackTimeMillis": 105143
+        },
+        {
+          "artistName": "Ajay Gogavale",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/81/ac/9d/81ac9df9-f258-8999-9b46-36712c021004/cover.jpg/400x400bb.jpg",
+          "collectionName": "Jatra (Original Motion Picture Soundtrack) - Single",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/34/1d/bf/341dbf99-554a-e1a9-6650-de1396be3b04/mzaf_10147405483488052944.plus.aac.p.m4a",
+          "primaryGenreName": "Regional Indian",
+          "trackId": 874449065,
+          "trackName": "Ye Go Ye Ye Maina",
+          "trackTimeMillis": 323184
+        },
+        {
+          "artistName": "Lil Tjay & 6LACK",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/a2/34/16/a23416df-ba98-a1ce-21c8-6cf0d83edfd6/886449179671.jpg/400x400bb.jpg",
+          "collectionName": "Destined 2 Win",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/77/5b/2e/775b2eaa-0a85-c832-5b76-82c3b22fe1a9/mzaf_17324613424522021634.plus.aac.p.m4a",
+          "primaryGenreName": "Hip-Hop/Rap",
+          "trackId": 1560913728,
+          "trackName": "Calling My Phone",
+          "trackTimeMillis": 205458
+        },
+        {
+          "artistName": "Sky Katz",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/4a/b7/65/4ab7653d-48bc-5ed3-5288-0fa61c209c0f/5054526893061_1.jpg/400x400bb.jpg",
+          "collectionName": "Like This (feat. Lil Tjay) - Single",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/e9/12/5e/e9125edb-5202-78c0-e0b3-06d7203fdcd5/mzaf_17609041938276774436.plus.aac.p.m4a",
+          "primaryGenreName": "Hip-Hop/Rap",
+          "trackId": 1452224259,
+          "trackName": "Like This (feat. Lil Tjay)",
+          "trackTimeMillis": 148799
+        },
+        {
+          "artistName": "Gotye",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b3/8a/98/b38a9867-2a9c-de2f-2d80-c624fb2200ec/11UMGIM19347.rgb.jpg/400x400bb.jpg",
+          "collectionName": "Making Mirrors",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/f9/9c/55/f99c553e-7be1-91dc-b55e-3da1aad29bba/mzaf_5038171343466446420.plus.aac.p.m4a",
+          "primaryGenreName": "Alternative",
+          "trackId": 1440754487,
+          "trackName": "Somebody That I Used to Know (feat. Kimbra)",
+          "trackTimeMillis": 244973
+        },
+        {
+          "artistName": "Maroon 5",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/8a/49/80/8a49806e-e9b6-1025-f4a8-cf51edb4504b/17UM1IM31406.rgb.jpg/400x400bb.jpg",
+          "collectionName": "Red Pill Blues (Deluxe)",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/11/5e/6e/115e6e42-7537-4c6b-d29d-3a2a2ccfef56/mzaf_5741118170595464193.plus.aac.p.m4a",
+          "primaryGenreName": "Pop",
+          "trackId": 1396141925,
+          "trackName": "Don't Wanna Know (feat. Kendrick Lamar)",
+          "trackTimeMillis": 214265
+        },
+        {
+          "artistName": "Arctic Monkeys",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/cc/0f/2d/cc0f2d02-5ff1-10e7-eea2-76863a55dbad/887828031795.png/400x400bb.jpg",
+          "collectionName": "AM",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview113/v4/f9/0a/93/f90a9394-1714-e179-016a-2debbe6a0b77/mzaf_17329326750890321965.plus.aac.p.m4a",
+          "primaryGenreName": "Alternative",
+          "trackId": 663098065,
+          "trackName": "I Wanna Be Yours",
+          "trackTimeMillis": 184019
+        },
+        {
+          "artistName": "Kendrick Lamar",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/94/28/36/94283609-93bb-db1c-e997-44e82c157e90/00602567261216.rgb.jpg/400x400bb.jpg",
+          "collectionName": "DAMN. COLLECTORS EDITION.",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/1c/c3/74/1cc37441-d51c-755e-3805-0c8042579782/mzaf_2255295071365958312.plus.aac.p.m4a",
+          "primaryGenreName": "Hip-Hop/Rap",
+          "trackId": 1440907873,
+          "trackName": "HUMBLE.",
+          "trackTimeMillis": 177000
+        },
+        {
+          "artistName": "Sunidhi Chauhan & Anu Malik",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/bd/56/ab/bd56ab8b-6983-949b-e46c-8d9db6497fa1/cover.jpg/400x400bb.jpg",
+          "collectionName": "No Entry - Pudhe Dokha Aahe (Original Motion Picture Soundtrack)",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/b3/eb/46/b3eb46ce-ff91-829f-2a28-33bc13dce92c/mzaf_3054857490292861158.plus.aac.p.m4a",
+          "primaryGenreName": "Marathi",
+          "trackId": 1655088473,
+          "trackName": "Zapun Zapun (Duet)",
+          "trackTimeMillis": 254841
+        },
+        {
+          "artistName": "Khalid",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/f8/45/5a/f8455a71-8307-aa9a-9c95-3d22efe0804f/886446326146.jpg/400x400bb.jpg",
+          "collectionName": "American Teen",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/d9/45/39/d9453931-976e-7ba5-dd4d-fc0a3d538676/mzaf_11215229888919167486.plus.aac.p.m4a",
+          "primaryGenreName": "R&B/Soul",
+          "trackId": 1200868874,
+          "trackName": "Young Dumb & Broke",
+          "trackTimeMillis": 202535
+        }
+      ],
+      "fun": [
+        {
+          "artistName": "Taylor Swift",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2d/46/e0/2d46e0bc-8ab9-85dd-4b56-ee6951351034/25UM1IM19577.rgb.jpg/400x400bb.jpg",
+          "collectionName": "The Life of a Showgirl",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/69/ea/d8/69ead898-7583-9bca-8be9-5f4e2140783f/mzaf_6210909912602321477.plus.aac.p.m4a",
+          "primaryGenreName": "Pop",
+          "trackId": 1833328845,
+          "trackName": "Opalite",
+          "trackTimeMillis": 235356
+        },
+        {
+          "artistName": "Ajay Gogavale",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music/v4/81/ac/9d/81ac9df9-f258-8999-9b46-36712c021004/cover.jpg/400x400bb.jpg",
+          "collectionName": "Jatra (Original Motion Picture Soundtrack) - Single",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/34/1d/bf/341dbf99-554a-e1a9-6650-de1396be3b04/mzaf_10147405483488052944.plus.aac.p.m4a",
+          "primaryGenreName": "Regional Indian",
+          "trackId": 874449065,
+          "trackName": "Ye Go Ye Ye Maina",
+          "trackTimeMillis": 323184
+        },
+        {
+          "artistName": "Tom Waits",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/b9/c8/ea/b9c8eac9-0f83-f194-7de6-f68d21b5ed1f/0045778654734.png/400x400bb.jpg",
+          "collectionName": "Mule Variations (Remastered)",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/1d/81/24/1d8124c0-d881-3472-3b10-ab2a77af3a1a/mzaf_10958614639470568174.plus.aac.p.m4a",
+          "primaryGenreName": "Alternative",
+          "trackId": 1485070857,
+          "trackName": "Come On Up to the House",
+          "trackTimeMillis": 276906
+        },
+        {
+          "artistName": "Surinder Kaur & Dixit",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/22/f1/64/22f164d1-71bb-4671-a583-fc6d693a1733/197186981633.jpg/400x400bb.jpg",
+          "collectionName": "Punjabi Retro Trap Mix - EP",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/10/b0/c8/10b0c894-27ac-6ff4-52d4-a1e1dfda1c82/mzaf_6620165910560116073.plus.aac.p.m4a",
+          "primaryGenreName": "Indian Pop",
+          "trackId": 1643835935,
+          "trackName": "Ek Meri Akh Kashni Trap Mix",
+          "trackTimeMillis": 105143
+        },
+        {
+          "artistName": "Bad Bunny",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/09/aa/f8/09aaf8da-8eaf-bf60-0c23-48a88d546cbd/26991.jpg/400x400bb.jpg",
+          "collectionName": "MIA (feat. Drake) - Single",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/50/eb/25/50eb2545-e400-fb43-6ff7-101f9bd429f2/mzaf_7089771968275109381.plus.aac.p.m4a",
+          "primaryGenreName": "Latin",
+          "trackId": 1662168786,
+          "trackName": "MIA (feat. Drake)",
+          "trackTimeMillis": 210368
+        },
+        {
+          "artistName": "Taylor Swift",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/49/3d/ab/493dab54-f920-9043-6181-80993b8116c9/19UMGIM53909.rgb.jpg/400x400bb.jpg",
+          "collectionName": "Lover",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e8/80/4f/e8804fa1-6118-74fd-4602-b96969ebef41/mzaf_5457103975229379192.plus.aac.p.m4a",
+          "primaryGenreName": "Pop",
+          "trackId": 1468058704,
+          "trackName": "You Need To Calm Down",
+          "trackTimeMillis": 171352
+        }
+      ]
+    }
+  },
+  "users": [
+    {
+      "createdAt": 1777810278,
+      "passwordHash": "000000001020e4bf",
+      "selectedGenres": [
+        "electronic",
+        "jazz",
+        "r-n-b"
+      ],
+      "username": "patil"
+    },
+    {
+      "createdAt": 1777754647,
+      "passwordHash": "00000000fcd1ccef",
+      "selectedGenres": [
+        "pop",
+        "hip-hop",
+        "jazz",
+        "electronic"
+      ],
+      "username": "testuser"
+    }
+  ]
+}

@@ -1,8 +1,19 @@
 'use client';
 
-import { Play, Pause } from 'lucide-react';
+import { Play, Pause, Heart, MoreVertical, Plus, ListMusic, Trash2, Download, ArrowUpCircle, Layers } from 'lucide-react';
 import { Song } from '@/lib/types';
 import { useAudio } from '@/lib/audio-context';
+import { useMusic } from '@/lib/music-context';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 
 interface SongCardProps {
@@ -10,17 +21,29 @@ interface SongCardProps {
   showPlayCount?: boolean;
   rank?: number;
   variant?: 'default' | 'compact' | 'list';
+  contextSongs?: Song[];
 }
 
-export function SongCard({ song, showPlayCount, rank, variant = 'default' }: SongCardProps) {
-  const { currentSong, isPlaying, playSong, togglePlay } = useAudio();
+export function SongCard({ song, showPlayCount, rank, variant = 'default', contextSongs }: SongCardProps) {
+  const { currentSong, isPlaying, playSong, togglePlay, addToPlaylist: addToQueue, setPlaylist } = useAudio();
+  const { isLiked, toggleLike, playlists, addToPlaylist, removeFromPlaylist, currentPlaylistName, addToDownloadQueue, addToPlayQueue, voteForSong } = useMusic();
   const isCurrentSong = currentSong?.trackId === song.trackId;
+  const liked = isLiked(song.trackId);
 
   const handleClick = () => {
     if (isCurrentSong) {
       togglePlay();
     } else {
-      playSong(song);
+      if (contextSongs) {
+        const index = contextSongs.findIndex(s => s.trackId === song.trackId);
+        if (index !== -1) {
+          setPlaylist(contextSongs, index);
+        } else {
+          playSong(song);
+        }
+      } else {
+        playSong(song);
+      }
     }
   };
 
@@ -100,6 +123,62 @@ export function SongCard({ song, showPlayCount, rank, variant = 'default' }: Son
             {song.playCount.toLocaleString()} plays
           </span>
         )}
+
+        {/* Like Button */}
+        <button
+          onClick={(e) => { e.stopPropagation(); toggleLike(song); }}
+          className="ml-1 p-1 rounded-full hover:bg-secondary transition-colors"
+          aria-label={liked ? 'Unlike' : 'Like'}
+        >
+          <Heart className={cn('w-4 h-4', liked ? 'fill-red-500 text-red-500' : 'text-muted-foreground')} />
+        </button>
+
+        {/* Options Menu */}
+        <div onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="p-1 ml-1 rounded-full hover:bg-secondary transition-colors text-muted-foreground">
+                <MoreVertical className="w-4 h-4" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 scrollbar-hide" onClick={(e) => e.stopPropagation()}>
+              <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); addToQueue(song); }}>
+                <ListMusic className="mr-2 w-4 h-4" /> Add to Queue
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); addToPlayQueue(song); }}>
+                <Layers className="mr-2 w-4 h-4" /> Add to Priority Play
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); addToDownloadQueue(song); }}>
+                <Download className="mr-2 w-4 h-4" /> Add to Download Queue
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); voteForSong(song); }}>
+                <ArrowUpCircle className="mr-2 w-4 h-4" /> Vote in Collab Queue
+              </DropdownMenuItem>
+              {playlists.length > 0 && (
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                    <Plus className="mr-2 w-4 h-4" /> Add to Playlist
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent className="scrollbar-hide overflow-y-auto max-h-64">
+                    {playlists.map((pl) => (
+                      <DropdownMenuItem key={pl.name} onSelect={(e) => { e.stopPropagation(); addToPlaylist(pl.name, song); }}>
+                        {pl.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+              )}
+              {currentPlaylistName && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); removeFromPlaylist(currentPlaylistName, song.trackId); }} className="text-destructive focus:text-destructive">
+                    <Trash2 className="mr-2 w-4 h-4" /> Remove from Playlist
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </button>
     );
   }
@@ -140,7 +219,7 @@ export function SongCard({ song, showPlayCount, rank, variant = 'default' }: Son
             )}
           </div>
         </div>
-        <div className="min-w-0 text-left">
+        <div className="min-w-0 text-left flex-1">
           <p className={cn(
             'text-sm font-medium truncate',
             isCurrentSong ? 'text-primary' : 'text-foreground'
@@ -150,6 +229,60 @@ export function SongCard({ song, showPlayCount, rank, variant = 'default' }: Son
           <p className="text-xs text-muted-foreground truncate">
             {song.artistName}
           </p>
+        </div>
+        <button
+          onClick={(e) => { e.stopPropagation(); toggleLike(song); }}
+          className="p-1 rounded-full hover:bg-secondary transition-colors"
+          aria-label={liked ? 'Unlike' : 'Like'}
+        >
+          <Heart className={cn('w-4 h-4', liked ? 'fill-red-500 text-red-500' : 'text-muted-foreground')} />
+        </button>
+
+        {/* Options Menu */}
+        <div onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="p-1 ml-1 rounded-full hover:bg-secondary transition-colors text-muted-foreground">
+                <MoreVertical className="w-4 h-4" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 scrollbar-hide" onClick={(e) => e.stopPropagation()}>
+              <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); addToQueue(song); }}>
+                <ListMusic className="mr-2 w-4 h-4" /> Add to Queue
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); addToPlayQueue(song); }}>
+                <Layers className="mr-2 w-4 h-4" /> Add to Priority Play
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); addToDownloadQueue(song); }}>
+                <Download className="mr-2 w-4 h-4" /> Add to Download Queue
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); voteForSong(song); }}>
+                <ArrowUpCircle className="mr-2 w-4 h-4" /> Vote in Collab Queue
+              </DropdownMenuItem>
+              {playlists.length > 0 && (
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                    <Plus className="mr-2 w-4 h-4" /> Add to Playlist
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent className="scrollbar-hide overflow-y-auto max-h-64">
+                    {playlists.map((pl) => (
+                      <DropdownMenuItem key={pl.name} onSelect={(e) => { e.stopPropagation(); addToPlaylist(pl.name, song); }}>
+                        {pl.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+              )}
+              {currentPlaylistName && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); removeFromPlaylist(currentPlaylistName, song.trackId); }} className="text-destructive focus:text-destructive">
+                    <Trash2 className="mr-2 w-4 h-4" /> Remove from Playlist
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </button>
     );
@@ -193,15 +326,73 @@ export function SongCard({ song, showPlayCount, rank, variant = 'default' }: Son
       </div>
 
       {/* Song Info */}
-      <p className={cn(
-        'text-sm font-medium truncate',
-        isCurrentSong ? 'text-primary' : 'text-foreground'
-      )}>
-        {song.trackName}
-      </p>
-      <p className="text-xs text-muted-foreground truncate">
-        {song.artistName}
-      </p>
+      <div className="flex items-center justify-between">
+        <div className="min-w-0 flex-1">
+          <p className={cn(
+            'text-sm font-medium truncate',
+            isCurrentSong ? 'text-primary' : 'text-foreground'
+          )}>
+            {song.trackName}
+          </p>
+          <p className="text-xs text-muted-foreground truncate">
+            {song.artistName}
+          </p>
+        </div>
+        <button
+          onClick={(e) => { e.stopPropagation(); toggleLike(song); }}
+          className="ml-1 p-1 rounded-full hover:bg-secondary transition-colors flex-shrink-0"
+          aria-label={liked ? 'Unlike' : 'Like'}
+        >
+          <Heart className={cn('w-4 h-4', liked ? 'fill-red-500 text-red-500' : 'text-muted-foreground')} />
+        </button>
+
+        {/* Options Menu */}
+        <div onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="p-1 ml-1 rounded-full hover:bg-secondary transition-colors text-muted-foreground">
+                <MoreVertical className="w-4 h-4" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 scrollbar-hide" onClick={(e) => e.stopPropagation()}>
+              <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); addToQueue(song); }}>
+                <ListMusic className="mr-2 w-4 h-4" /> Add to Queue
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); addToPlayQueue(song); }}>
+                <Layers className="mr-2 w-4 h-4" /> Add to Priority Play
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); addToDownloadQueue(song); }}>
+                <Download className="mr-2 w-4 h-4" /> Add to Download Queue
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); voteForSong(song); }}>
+                <ArrowUpCircle className="mr-2 w-4 h-4" /> Vote in Collab Queue
+              </DropdownMenuItem>
+              {playlists.length > 0 && (
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                    <Plus className="mr-2 w-4 h-4" /> Add to Playlist
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent className="scrollbar-hide overflow-y-auto max-h-64">
+                    {playlists.map((pl) => (
+                      <DropdownMenuItem key={pl.name} onSelect={(e) => { e.stopPropagation(); addToPlaylist(pl.name, song); }}>
+                        {pl.name}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+              )}
+              {currentPlaylistName && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); removeFromPlaylist(currentPlaylistName, song.trackId); }} className="text-destructive focus:text-destructive">
+                    <Trash2 className="mr-2 w-4 h-4" /> Remove from Playlist
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
     </button>
   );
 }

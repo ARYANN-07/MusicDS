@@ -17,7 +17,7 @@ export async function searchSongs(term: string, limit = 25): Promise<Song[]> {
       .filter(track => track.previewUrl) // Only include tracks with preview URLs
       .map(itunesTrackToSong);
   } catch (error) {
-    console.error('iTunes search error:', error);
+    console.warn('iTunes search warning:', error);
     return [];
   }
 }

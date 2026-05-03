@@ -3,8 +3,8 @@
 import { createContext, useContext, useState, useRef, useCallback, useEffect, ReactNode } from 'react';
 import { Song } from './types';
 import { playlistBST } from './data-structures/threaded-bst';
-// Splay Tree (recently played) — NOT YET IMPLEMENTED in C++ backend
-// Red-Black Tree (top charts) — lives in C++ backend, called via /api/backend/api/charts/increment
+// Splay Tree (recently played) — implemented in C++ backend
+// Red-Black Tree (top charts) — implemented in C++ backend
 
 interface AudioContextType {
   // Current state
@@ -106,7 +106,19 @@ export function AudioProvider({ children }: AudioProviderProps) {
         setCurrentIndex(index);
         setIsPlaying(true);
         
-        // Splay Tree: not yet implemented — recently played tracking skipped
+        // Splay Tree: notify C++ backend to record history
+        let username = '';
+        try {
+          const userStr = localStorage.getItem('musicds_current_user');
+          if (userStr) username = JSON.parse(userStr).username;
+        } catch (e) {}
+
+        fetch('/api/backend/api/history/record', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ song, username }),
+        }).catch(() => { /* backend may not be running */ });
+
         // Red-Black Tree: notify C++ backend to increment play count
         fetch('/api/backend/api/charts/increment', {
           method: 'POST',
@@ -115,6 +127,10 @@ export function AudioProvider({ children }: AudioProviderProps) {
         }).catch(() => { /* backend may not be running */ });
       })
       .catch((error) => {
+        if (error.name === 'AbortError') {
+          // Play request was interrupted by a new load request (user clicked next quickly)
+          return;
+        }
         console.error('Failed to play:', error);
         setIsPlaying(false);
       });

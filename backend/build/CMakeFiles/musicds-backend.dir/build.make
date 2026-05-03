@@ -131,12 +131,92 @@ CMakeFiles/musicds-backend.dir/data-structures/fibonacci_heap.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/musicds-backend.dir/data-structures/fibonacci_heap.cpp.s"
 	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\fibonacci_heap.cpp -o CMakeFiles\musicds-backend.dir\data-structures\fibonacci_heap.cpp.s
 
+CMakeFiles/musicds-backend.dir/data-structures/splay_tree.cpp.obj: CMakeFiles/musicds-backend.dir/flags.make
+CMakeFiles/musicds-backend.dir/data-structures/splay_tree.cpp.obj: CMakeFiles/musicds-backend.dir/includes_CXX.rsp
+CMakeFiles/musicds-backend.dir/data-structures/splay_tree.cpp.obj: C:/Users/Aryan_/Desktop/MusicDS-V/backend/data-structures/splay_tree.cpp
+CMakeFiles/musicds-backend.dir/data-structures/splay_tree.cpp.obj: CMakeFiles/musicds-backend.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Aryan_\Desktop\MusicDS-V\backend\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/musicds-backend.dir/data-structures/splay_tree.cpp.obj"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/musicds-backend.dir/data-structures/splay_tree.cpp.obj -MF CMakeFiles\musicds-backend.dir\data-structures\splay_tree.cpp.obj.d -o CMakeFiles\musicds-backend.dir\data-structures\splay_tree.cpp.obj -c C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\splay_tree.cpp
+
+CMakeFiles/musicds-backend.dir/data-structures/splay_tree.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/musicds-backend.dir/data-structures/splay_tree.cpp.i"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\splay_tree.cpp > CMakeFiles\musicds-backend.dir\data-structures\splay_tree.cpp.i
+
+CMakeFiles/musicds-backend.dir/data-structures/splay_tree.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/musicds-backend.dir/data-structures/splay_tree.cpp.s"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\splay_tree.cpp -o CMakeFiles\musicds-backend.dir\data-structures\splay_tree.cpp.s
+
+CMakeFiles/musicds-backend.dir/data-structures/trie.cpp.obj: CMakeFiles/musicds-backend.dir/flags.make
+CMakeFiles/musicds-backend.dir/data-structures/trie.cpp.obj: CMakeFiles/musicds-backend.dir/includes_CXX.rsp
+CMakeFiles/musicds-backend.dir/data-structures/trie.cpp.obj: C:/Users/Aryan_/Desktop/MusicDS-V/backend/data-structures/trie.cpp
+CMakeFiles/musicds-backend.dir/data-structures/trie.cpp.obj: CMakeFiles/musicds-backend.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Aryan_\Desktop\MusicDS-V\backend\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/musicds-backend.dir/data-structures/trie.cpp.obj"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/musicds-backend.dir/data-structures/trie.cpp.obj -MF CMakeFiles\musicds-backend.dir\data-structures\trie.cpp.obj.d -o CMakeFiles\musicds-backend.dir\data-structures\trie.cpp.obj -c C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\trie.cpp
+
+CMakeFiles/musicds-backend.dir/data-structures/trie.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/musicds-backend.dir/data-structures/trie.cpp.i"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\trie.cpp > CMakeFiles\musicds-backend.dir\data-structures\trie.cpp.i
+
+CMakeFiles/musicds-backend.dir/data-structures/trie.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/musicds-backend.dir/data-structures/trie.cpp.s"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\trie.cpp -o CMakeFiles\musicds-backend.dir\data-structures\trie.cpp.s
+
+CMakeFiles/musicds-backend.dir/data-structures/bplus_tree.cpp.obj: CMakeFiles/musicds-backend.dir/flags.make
+CMakeFiles/musicds-backend.dir/data-structures/bplus_tree.cpp.obj: CMakeFiles/musicds-backend.dir/includes_CXX.rsp
+CMakeFiles/musicds-backend.dir/data-structures/bplus_tree.cpp.obj: C:/Users/Aryan_/Desktop/MusicDS-V/backend/data-structures/bplus_tree.cpp
+CMakeFiles/musicds-backend.dir/data-structures/bplus_tree.cpp.obj: CMakeFiles/musicds-backend.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Aryan_\Desktop\MusicDS-V\backend\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/musicds-backend.dir/data-structures/bplus_tree.cpp.obj"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/musicds-backend.dir/data-structures/bplus_tree.cpp.obj -MF CMakeFiles\musicds-backend.dir\data-structures\bplus_tree.cpp.obj.d -o CMakeFiles\musicds-backend.dir\data-structures\bplus_tree.cpp.obj -c C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\bplus_tree.cpp
+
+CMakeFiles/musicds-backend.dir/data-structures/bplus_tree.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/musicds-backend.dir/data-structures/bplus_tree.cpp.i"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\bplus_tree.cpp > CMakeFiles\musicds-backend.dir\data-structures\bplus_tree.cpp.i
+
+CMakeFiles/musicds-backend.dir/data-structures/bplus_tree.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/musicds-backend.dir/data-structures/bplus_tree.cpp.s"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\bplus_tree.cpp -o CMakeFiles\musicds-backend.dir\data-structures\bplus_tree.cpp.s
+
+CMakeFiles/musicds-backend.dir/data-structures/doubly_linked_list.cpp.obj: CMakeFiles/musicds-backend.dir/flags.make
+CMakeFiles/musicds-backend.dir/data-structures/doubly_linked_list.cpp.obj: CMakeFiles/musicds-backend.dir/includes_CXX.rsp
+CMakeFiles/musicds-backend.dir/data-structures/doubly_linked_list.cpp.obj: C:/Users/Aryan_/Desktop/MusicDS-V/backend/data-structures/doubly_linked_list.cpp
+CMakeFiles/musicds-backend.dir/data-structures/doubly_linked_list.cpp.obj: CMakeFiles/musicds-backend.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Aryan_\Desktop\MusicDS-V\backend\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/musicds-backend.dir/data-structures/doubly_linked_list.cpp.obj"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/musicds-backend.dir/data-structures/doubly_linked_list.cpp.obj -MF CMakeFiles\musicds-backend.dir\data-structures\doubly_linked_list.cpp.obj.d -o CMakeFiles\musicds-backend.dir\data-structures\doubly_linked_list.cpp.obj -c C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\doubly_linked_list.cpp
+
+CMakeFiles/musicds-backend.dir/data-structures/doubly_linked_list.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/musicds-backend.dir/data-structures/doubly_linked_list.cpp.i"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\doubly_linked_list.cpp > CMakeFiles\musicds-backend.dir\data-structures\doubly_linked_list.cpp.i
+
+CMakeFiles/musicds-backend.dir/data-structures/doubly_linked_list.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/musicds-backend.dir/data-structures/doubly_linked_list.cpp.s"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\doubly_linked_list.cpp -o CMakeFiles\musicds-backend.dir\data-structures\doubly_linked_list.cpp.s
+
+CMakeFiles/musicds-backend.dir/data-structures/bloom_filter.cpp.obj: CMakeFiles/musicds-backend.dir/flags.make
+CMakeFiles/musicds-backend.dir/data-structures/bloom_filter.cpp.obj: CMakeFiles/musicds-backend.dir/includes_CXX.rsp
+CMakeFiles/musicds-backend.dir/data-structures/bloom_filter.cpp.obj: C:/Users/Aryan_/Desktop/MusicDS-V/backend/data-structures/bloom_filter.cpp
+CMakeFiles/musicds-backend.dir/data-structures/bloom_filter.cpp.obj: CMakeFiles/musicds-backend.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:\Users\Aryan_\Desktop\MusicDS-V\backend\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/musicds-backend.dir/data-structures/bloom_filter.cpp.obj"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/musicds-backend.dir/data-structures/bloom_filter.cpp.obj -MF CMakeFiles\musicds-backend.dir\data-structures\bloom_filter.cpp.obj.d -o CMakeFiles\musicds-backend.dir\data-structures\bloom_filter.cpp.obj -c C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\bloom_filter.cpp
+
+CMakeFiles/musicds-backend.dir/data-structures/bloom_filter.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/musicds-backend.dir/data-structures/bloom_filter.cpp.i"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\bloom_filter.cpp > CMakeFiles\musicds-backend.dir\data-structures\bloom_filter.cpp.i
+
+CMakeFiles/musicds-backend.dir/data-structures/bloom_filter.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/musicds-backend.dir/data-structures/bloom_filter.cpp.s"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:\Users\Aryan_\Desktop\MusicDS-V\backend\data-structures\bloom_filter.cpp -o CMakeFiles\musicds-backend.dir\data-structures\bloom_filter.cpp.s
+
 # Object files for target musicds-backend
 musicds__backend_OBJECTS = \
 "CMakeFiles/musicds-backend.dir/main.cpp.obj" \
 "CMakeFiles/musicds-backend.dir/data-structures/avl_tree.cpp.obj" \
 "CMakeFiles/musicds-backend.dir/data-structures/red_black_tree.cpp.obj" \
-"CMakeFiles/musicds-backend.dir/data-structures/fibonacci_heap.cpp.obj"
+"CMakeFiles/musicds-backend.dir/data-structures/fibonacci_heap.cpp.obj" \
+"CMakeFiles/musicds-backend.dir/data-structures/splay_tree.cpp.obj" \
+"CMakeFiles/musicds-backend.dir/data-structures/trie.cpp.obj" \
+"CMakeFiles/musicds-backend.dir/data-structures/bplus_tree.cpp.obj" \
+"CMakeFiles/musicds-backend.dir/data-structures/doubly_linked_list.cpp.obj" \
+"CMakeFiles/musicds-backend.dir/data-structures/bloom_filter.cpp.obj"
 
 # External object files for target musicds-backend
 musicds__backend_EXTERNAL_OBJECTS =
@@ -145,11 +225,16 @@ musicds-backend.exe: CMakeFiles/musicds-backend.dir/main.cpp.obj
 musicds-backend.exe: CMakeFiles/musicds-backend.dir/data-structures/avl_tree.cpp.obj
 musicds-backend.exe: CMakeFiles/musicds-backend.dir/data-structures/red_black_tree.cpp.obj
 musicds-backend.exe: CMakeFiles/musicds-backend.dir/data-structures/fibonacci_heap.cpp.obj
+musicds-backend.exe: CMakeFiles/musicds-backend.dir/data-structures/splay_tree.cpp.obj
+musicds-backend.exe: CMakeFiles/musicds-backend.dir/data-structures/trie.cpp.obj
+musicds-backend.exe: CMakeFiles/musicds-backend.dir/data-structures/bplus_tree.cpp.obj
+musicds-backend.exe: CMakeFiles/musicds-backend.dir/data-structures/doubly_linked_list.cpp.obj
+musicds-backend.exe: CMakeFiles/musicds-backend.dir/data-structures/bloom_filter.cpp.obj
 musicds-backend.exe: CMakeFiles/musicds-backend.dir/build.make
 musicds-backend.exe: CMakeFiles/musicds-backend.dir/linkLibs.rsp
 musicds-backend.exe: CMakeFiles/musicds-backend.dir/objects1.rsp
 musicds-backend.exe: CMakeFiles/musicds-backend.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\Aryan_\Desktop\MusicDS-V\backend\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable musicds-backend.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:\Users\Aryan_\Desktop\MusicDS-V\backend\build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable musicds-backend.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\musicds-backend.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

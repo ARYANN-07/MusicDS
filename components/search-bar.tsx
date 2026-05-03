@@ -86,10 +86,10 @@ export function SearchBar({ onFocus }: SearchBarProps) {
       {isOpen && query.trim() && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-popover border border-border rounded-lg shadow-lg overflow-hidden z-50">
           {/* DS Notice */}
-          <div className="px-3 py-2 border-b border-border bg-yellow-500/5">
-            <span className="text-xs text-yellow-600 dark:text-yellow-400 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-yellow-500" />
-              Trie (autocomplete) not yet implemented — showing iTunes API results only
+          <div className="px-3 py-2 border-b border-border bg-primary/5">
+            <span className="text-xs text-primary flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-primary" />
+              Trie (autocomplete)
             </span>
           </div>
 

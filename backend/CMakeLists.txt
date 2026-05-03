@@ -11,6 +11,11 @@ add_executable(musicds-backend
     data-structures/avl_tree.cpp
     data-structures/red_black_tree.cpp
     data-structures/fibonacci_heap.cpp
+    data-structures/splay_tree.cpp
+    data-structures/trie.cpp
+    data-structures/bplus_tree.cpp
+    data-structures/doubly_linked_list.cpp
+    data-structures/bloom_filter.cpp
 )
 
 # Winsock2 (required on Windows — the only external dependency)

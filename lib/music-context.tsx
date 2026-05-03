@@ -1,12 +1,11 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { Song, GENRES, UserPreferences } from './types';
+import { Song, UserPreferences } from './types';
 import { searchSongs, getSongsByGenres, getPopularSongs } from './itunes-api';
+import { useAuth } from './auth-context';
 
 // ─── Backend API helpers ────────────────────────────────────────────────────
-// All data structure logic lives in the C++ backend (localhost:8080).
-// These helpers call the Next.js proxy at /api/backend/...
 
 async function backendGet<T>(path: string): Promise<T | null> {
   try {
@@ -34,6 +33,11 @@ async function backendPost<T>(path: string, body: unknown): Promise<T | null> {
 
 // ─── Context types ──────────────────────────────────────────────────────────
 
+interface PlaylistInfo {
+  name: string;
+  songCount: number;
+}
+
 interface MusicContextType {
   selectedGenres: string[];
   hasOnboarded: boolean;
@@ -43,16 +47,68 @@ interface MusicContextType {
   allSongs: Song[];
   recommendations: Song[];
   topCharts: Song[];
-  recentlyPlayed: Song[];   // Always [] — Splay Tree not yet implemented
+  recentlyPlayed: Song[];
   searchResults: Song[];
+  likedSongs: Song[];
+  playlists: PlaylistInfo[];
+  playlistSongs: Song[];
+  currentPlaylistName: string;
 
   setSelectedGenres: (genres: string[]) => void;
   completeOnboarding: () => Promise<void>;
   search: (query: string) => Promise<void>;
   refreshRecommendations: () => Promise<void>;
   refreshTopCharts: () => Promise<void>;
-  refreshRecentlyPlayed: () => void;   // no-op placeholder
+  refreshRecentlyPlayed: () => Promise<void>;
   loadMoreSongs: () => Promise<void>;
+
+  // Liked songs
+  toggleLike: (song: Song) => Promise<void>;
+  isLiked: (trackId: number) => boolean;
+  refreshLikedSongs: () => Promise<void>;
+
+  // Playlists
+  createPlaylist: (name: string) => Promise<void>;
+  addToPlaylist: (playlistName: string, song: Song) => Promise<void>;
+  removeFromPlaylist: (playlistName: string, trackId: number) => Promise<void>;
+  deletePlaylist: (playlistName: string) => Promise<void>;
+  loadPlaylist: (playlistName: string) => Promise<void>;
+  refreshPlaylists: () => Promise<void>;
+
+  // Binomial Heap — Download Queue
+  downloadQueue: Song[];
+  addToDownloadQueue: (song: Song, priority?: number) => Promise<void>;
+  popDownload: () => Promise<Song | null>;
+  refreshDownloadQueue: () => Promise<void>;
+
+  // Leftist Tree — Priority Play Queue
+  playQueue: Song[];
+  addToPlayQueue: (song: Song, priority?: number) => Promise<void>;
+  popPlayQueue: () => Promise<Song | null>;
+  refreshPlayQueue: () => Promise<void>;
+
+  // Pairing Heap — Collaborative Queue
+  collabQueue: Song[];
+  voteForSong: (song: Song) => Promise<void>;
+  refreshCollabQueue: () => Promise<void>;
+
+  // Suffix Array — Substring Search
+  suffixResults: Song[];
+  suffixSearch: (query: string) => Promise<void>;
+
+  // Treap — Shuffle
+  shuffledSongs: Song[];
+  getShuffle: () => Promise<void>;
+  reRandomize: () => Promise<void>;
+
+  // Skip List — Playlist History
+  playlistVersions: { version: number; songCount: number }[];
+  undoPlaylist: (playlistName: string) => Promise<void>;
+  refreshPlaylistHistory: (playlistName: string) => Promise<void>;
+
+  // Patricia Trie stats
+  trieNodeCount: number;
+  refreshTrieStats: () => Promise<void>;
 }
 
 const MusicContext = createContext<MusicContextType | null>(null);
@@ -69,6 +125,9 @@ const STORAGE_KEY_ONBOARDED = 'musicds_has_onboarded';
 const STORAGE_KEY_GENRES    = 'musicds_genres';
 
 export function MusicProvider({ children }: { children: ReactNode }) {
+  const { currentUser, isLoggedIn } = useAuth();
+  const username = currentUser?.username || '';
+
   const [selectedGenres, setSelectedGenresState] = useState<string[]>([]);
   const [hasOnboarded, setHasOnboarded]          = useState(true);
   const [isLoading, setIsLoading]                = useState(false);
@@ -78,9 +137,21 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   const [recommendations, setRecommendations] = useState<Song[]>([]);
   const [topCharts, setTopCharts]             = useState<Song[]>([]);
   const [searchResults, setSearchResults]     = useState<Song[]>([]);
+  const [recentlyPlayed, setRecentlyPlayed]   = useState<Song[]>([]);
+  const [likedSongs, setLikedSongs]           = useState<Song[]>([]);
+  const [likedSet, setLikedSet]               = useState<Set<number>>(new Set());
+  const [playlists, setPlaylists]             = useState<PlaylistInfo[]>([]);
+  const [playlistSongs, setPlaylistSongs]     = useState<Song[]>([]);
+  const [currentPlaylistName, setCurrentPlaylistName] = useState('');
 
-  // Splay Tree not yet implemented — recently played is always empty
-  const recentlyPlayed: Song[] = [];
+  // New DS state
+  const [downloadQueue, setDownloadQueue]     = useState<Song[]>([]);
+  const [playQueue, setPlayQueue]             = useState<Song[]>([]);
+  const [collabQueue, setCollabQueue]         = useState<Song[]>([]);
+  const [suffixResults, setSuffixResults]     = useState<Song[]>([]);
+  const [shuffledSongs, setShuffledSongs]     = useState<Song[]>([]);
+  const [playlistVersions, setPlaylistVersions] = useState<{version:number;songCount:number}[]>([]);
+  const [trieNodeCount, setTrieNodeCount]     = useState(0);
 
   // ── Check backend health on mount ────────────────────────────────────────
   useEffect(() => {
@@ -94,55 +165,62 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const onboarded = localStorage.getItem(STORAGE_KEY_ONBOARDED);
-    // Initially set from localStorage, but we will verify with backend
     setHasOnboarded(onboarded === 'true');
 
     const savedGenres = localStorage.getItem(STORAGE_KEY_GENRES);
     if (savedGenres) {
-      try { setSelectedGenresState(JSON.parse(savedGenres)); } catch {}
+      try { setSelectedGenresState(JSON.parse(savedGenres)); } catch { /* ignore */ }
     }
   }, []);
 
-  // ── Fetch stored preferences from AVL Tree (C++) ─────────────────────────
+  // ── Load user data when logged in ─────────────────────────────────────────
   useEffect(() => {
-    if (!backendAvailable) return;
+    if (!backendAvailable || !isLoggedIn || !username) return;
+
     (async () => {
-      const prefs = await backendGet<UserPreferences>('api/preferences/default');
+      // Preferences from AVL Tree
+      const prefs = await backendGet<UserPreferences>(`api/preferences/${username}`);
       if (prefs?.selectedGenres?.length) {
         setSelectedGenresState(prefs.selectedGenres);
         setHasOnboarded(true);
       } else {
-        // Backend is in-memory and has restarted/lost data.
-        // Force onboarding again.
-        setHasOnboarded(false);
-        setSelectedGenresState([]);
-        localStorage.removeItem(STORAGE_KEY_ONBOARDED);
-        localStorage.removeItem(STORAGE_KEY_GENRES);
+        // Check B+ Tree user record for saved genres
+        const user = await backendGet<{ selectedGenres: string[] }>(`api/auth/user/${username}`);
+        if (user?.selectedGenres?.length) {
+          setSelectedGenresState(user.selectedGenres);
+          setHasOnboarded(true);
+        } else {
+          setHasOnboarded(false);
+          setSelectedGenresState([]);
+          localStorage.removeItem(STORAGE_KEY_ONBOARDED);
+          localStorage.removeItem(STORAGE_KEY_GENRES);
+        }
       }
-    })();
-  }, [backendAvailable]);
 
-  // ── Refresh top charts from Red-Black Tree (C++) on mount ────────────────
-  useEffect(() => {
-    if (!backendAvailable) return;
-    (async () => {
+      // Top charts from Red-Black Tree
       const charts = await backendGet<{ song: Song }[]>('api/charts/top?limit=10');
-      if (charts && charts.length > 0) {
-        setTopCharts(charts.map(e => e.song));
-      }
-    })();
-  }, [backendAvailable]);
+      if (charts && charts.length > 0) setTopCharts(charts.map(e => e.song));
 
-  // ── Refresh recommendations from Fibonacci Heap (C++) on mount ───────────
-  useEffect(() => {
-    if (!backendAvailable) return;
-    (async () => {
+      // Recommendations from Fibonacci Heap
       const recs = await backendGet<{ song: Song }[]>('api/recommendations/top?limit=10');
-      if (recs && recs.length > 0) {
-        setRecommendations(recs.map(e => e.song));
+      if (recs && recs.length > 0) setRecommendations(recs.map(e => e.song));
+
+      // Recently played from Splay Tree
+      const recent = await backendGet<{ song: Song }[]>('api/history/recent?limit=10');
+      if (recent && recent.length > 0) setRecentlyPlayed(recent.map(e => e.song));
+
+      // Liked songs
+      const liked = await backendGet<Song[]>(`api/liked/${username}`);
+      if (liked) {
+        setLikedSongs(liked);
+        setLikedSet(new Set(liked.map(s => s.trackId)));
       }
+
+      // Playlists
+      const pls = await backendGet<PlaylistInfo[]>(`api/playlists/${username}`);
+      if (pls) setPlaylists(pls);
     })();
-  }, [backendAvailable]);
+  }, [backendAvailable, isLoggedIn, username]);
 
   // ── Actions ───────────────────────────────────────────────────────────────
 
@@ -151,28 +229,25 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     if (typeof window !== 'undefined') {
       localStorage.setItem(STORAGE_KEY_GENRES, JSON.stringify(genres));
     }
-    // Persist to AVL Tree (C++ backend)
-    if (backendAvailable) {
+    if (backendAvailable && username) {
       const prefs: UserPreferences = {
-        userId: 'default',
+        userId: username,
         selectedGenres: genres,
         volume: 0.7,
         lastLogin: Date.now(),
       };
       backendPost('api/preferences', prefs);
     }
-  }, [backendAvailable]);
+  }, [backendAvailable, username]);
 
   const completeOnboarding = useCallback(async () => {
     if (selectedGenres.length === 0) return;
     setIsLoading(true);
 
     try {
-      // 1. Fetch genre songs from iTunes
       const songs = await getSongsByGenres(selectedGenres, 15);
       setAllSongs(songs);
 
-      // 2. Add to Fibonacci Heap (C++ recommendations)
       if (backendAvailable) {
         for (const song of songs) {
           const genreBoost = selectedGenres.includes(song.primaryGenreName.toLowerCase()) ? 20 : 0;
@@ -186,7 +261,6 @@ export function MusicProvider({ children }: { children: ReactNode }) {
         if (recs) setRecommendations(recs.map(e => e.song));
       }
 
-      // 3. Fetch popular songs → Red-Black Tree (C++ top charts)
       const popular = await getPopularSongs(20);
       if (backendAvailable) {
         for (const song of popular) {
@@ -199,15 +273,24 @@ export function MusicProvider({ children }: { children: ReactNode }) {
         if (charts) setTopCharts(charts.map(e => e.song));
       }
 
-      // 4. Merge popular songs into allSongs
       const ids = new Set(songs.map(s => s.trackId));
       const extra = popular.filter(s => !ids.has(s.trackId));
-      setAllSongs(prev => [...prev, ...extra]);
+      const finalSongs = [...songs, ...extra];
+      setAllSongs(finalSongs);
 
-      // 5. Save preferences (AVL Tree)
       if (backendAvailable) {
+        await backendPost('api/search/index', { songs: finalSongs });
+        // Index into Patricia Trie, Suffix Array, and Treap
+        await backendPost('api/search/index-compressed', { songs: finalSongs });
+        await backendPost('api/lyrics/index', { songs: finalSongs });
+        for (const song of finalSongs) {
+          await backendPost('api/shuffle/add', { song, score: 50 + Math.random() * 50 });
+        }
+      }
+
+      if (backendAvailable && username) {
         await backendPost('api/preferences', {
-          userId: 'default',
+          userId: username,
           selectedGenres,
           volume: 0.7,
           lastLogin: Date.now(),
@@ -221,21 +304,32 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, [selectedGenres, backendAvailable]);
+  }, [selectedGenres, backendAvailable, username]);
 
-  // Search — uses iTunes API only (Trie not yet implemented)
+  // Search — Trie with iTunes fallback
   const search = useCallback(async (query: string) => {
     if (!query.trim()) { setSearchResults([]); return; }
     setIsLoading(true);
     try {
+      if (backendAvailable) {
+        const localResults = await backendGet<Song[]>(`api/search/autocomplete?q=${encodeURIComponent(query)}&limit=10`);
+        if (localResults && localResults.length > 0) {
+          setSearchResults(localResults);
+          setIsLoading(false);
+          return;
+        }
+      }
       const results = await searchSongs(query, 20);
       setSearchResults(results);
+      if (backendAvailable && results.length > 0) {
+        backendPost('api/search/index', { songs: results }).catch(() => {});
+      }
     } catch {
       setSearchResults([]);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [backendAvailable]);
 
   const refreshRecommendations = useCallback(async () => {
     if (!backendAvailable) return;
@@ -249,8 +343,11 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     if (charts) setTopCharts(charts.map(e => e.song));
   }, [backendAvailable]);
 
-  // Splay Tree not implemented — no-op
-  const refreshRecentlyPlayed = useCallback(() => {}, []);
+  const refreshRecentlyPlayed = useCallback(async () => {
+    if (!backendAvailable || !username) return;
+    const recent = await backendGet<{ song: Song }[]>(`api/history/recent?username=${encodeURIComponent(username)}&limit=10`);
+    if (recent) setRecentlyPlayed(recent.map(e => e.song));
+  }, [backendAvailable, username]);
 
   const loadMoreSongs = useCallback(async () => {
     if (selectedGenres.length === 0) return;
@@ -258,20 +355,210 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     try {
       const more = await getSongsByGenres(selectedGenres, 10);
       const ids  = new Set(allSongs.map(s => s.trackId));
-      setAllSongs(prev => [...prev, ...more.filter(s => !ids.has(s.trackId))]);
+      const newSongs = more.filter(s => !ids.has(s.trackId));
+      setAllSongs(prev => [...prev, ...newSongs]);
+      if (backendAvailable && newSongs.length > 0) {
+        backendPost('api/search/index', { songs: newSongs }).catch(() => {});
+      }
     } catch (err) {
       console.error('loadMoreSongs error:', err);
     } finally {
       setIsLoading(false);
     }
-  }, [selectedGenres, allSongs]);
+  }, [selectedGenres, allSongs, backendAvailable]);
+
+  // ── Liked songs ───────────────────────────────────────────────────────────
+
+  const isLiked = useCallback((trackId: number) => {
+    return likedSet.has(trackId);
+  }, [likedSet]);
+
+  const toggleLike = useCallback(async (song: Song) => {
+    if (!backendAvailable || !username) return;
+    const result = await backendPost<{ ok: boolean; liked: boolean }>('api/liked/toggle', {
+      username,
+      song,
+    });
+    if (result) {
+      if (result.liked) {
+        setLikedSongs(prev => [song, ...prev]);
+        setLikedSet(prev => new Set([...prev, song.trackId]));
+      } else {
+        setLikedSongs(prev => prev.filter(s => s.trackId !== song.trackId));
+        setLikedSet(prev => { const next = new Set(prev); next.delete(song.trackId); return next; });
+      }
+    }
+  }, [backendAvailable, username]);
+
+  const refreshLikedSongs = useCallback(async () => {
+    if (!backendAvailable || !username) return;
+    const liked = await backendGet<Song[]>(`api/liked/${username}`);
+    if (liked) {
+      setLikedSongs(liked);
+      setLikedSet(new Set(liked.map(s => s.trackId)));
+    }
+  }, [backendAvailable, username]);
+
+  // ── Playlists ─────────────────────────────────────────────────────────────
+
+  const refreshPlaylists = useCallback(async () => {
+    if (!backendAvailable || !username) return;
+    const pls = await backendGet<PlaylistInfo[]>(`api/playlists/${username}`);
+    if (pls) setPlaylists(pls);
+  }, [backendAvailable, username]);
+
+  const createPlaylist = useCallback(async (name: string) => {
+    if (!backendAvailable || !username) return;
+    await backendPost('api/playlists/create', { username, name });
+    await refreshPlaylists();
+  }, [backendAvailable, username, refreshPlaylists]);
+
+  const addToPlaylist = useCallback(async (playlistName: string, song: Song) => {
+    if (!backendAvailable || !username) return;
+    await backendPost('api/playlists/add', { username, playlistName, song });
+    await refreshPlaylists();
+    if (currentPlaylistName === playlistName) {
+      const songs = await backendGet<Song[]>(`api/playlists/${username}/${playlistName}`);
+      if (songs) setPlaylistSongs(songs);
+    }
+  }, [backendAvailable, username, refreshPlaylists, currentPlaylistName]);
+
+  const removeFromPlaylist = useCallback(async (playlistName: string, trackId: number) => {
+    if (!backendAvailable || !username) return;
+    await backendPost('api/playlists/remove', { username, playlistName, trackId });
+    await refreshPlaylists();
+    if (currentPlaylistName === playlistName) {
+      setPlaylistSongs(prev => prev.filter(s => s.trackId !== trackId));
+    }
+  }, [backendAvailable, username, refreshPlaylists, currentPlaylistName]);
+
+  const deletePlaylist = useCallback(async (playlistName: string) => {
+    if (!backendAvailable || !username) return;
+    await backendPost('api/playlists/delete', { username, playlistName });
+    await refreshPlaylists();
+    if (currentPlaylistName === playlistName) {
+      setCurrentPlaylistName('');
+      setPlaylistSongs([]);
+    }
+  }, [backendAvailable, username, refreshPlaylists, currentPlaylistName]);
+
+  const loadPlaylist = useCallback(async (playlistName: string) => {
+    if (!backendAvailable || !username) return;
+    setCurrentPlaylistName(playlistName);
+    const songs = await backendGet<Song[]>(`api/playlists/${username}/${playlistName}`);
+    if (songs) setPlaylistSongs(songs);
+  }, [backendAvailable, username]);
 
   // Auto-reload if already onboarded
   useEffect(() => {
-    if (hasOnboarded && allSongs.length === 0 && selectedGenres.length > 0) {
+    if (hasOnboarded && allSongs.length === 0 && selectedGenres.length > 0 && isLoggedIn) {
       completeOnboarding();
     }
-  }, [hasOnboarded, allSongs.length, selectedGenres.length]);
+  }, [hasOnboarded, allSongs.length, selectedGenres.length, isLoggedIn]);
+
+  // ── Binomial Heap — Download Queue ────────────────────────────────────────
+
+  const refreshDownloadQueue = useCallback(async () => {
+    if (!backendAvailable) return;
+    const q = await backendGet<Song[]>('api/download/queue?limit=50');
+    if (q) setDownloadQueue(q);
+  }, [backendAvailable]);
+
+  const addToDownloadQueue = useCallback(async (song: Song, priority = 1) => {
+    if (!backendAvailable) return;
+    await backendPost('api/download/add', { song, priority });
+    await refreshDownloadQueue();
+  }, [backendAvailable, refreshDownloadQueue]);
+
+  const popDownload = useCallback(async (): Promise<Song | null> => {
+    if (!backendAvailable) return null;
+    const r = await backendPost<{ ok: boolean; song: Song }>('api/download/next', {});
+    if (r?.ok) { await refreshDownloadQueue(); return r.song; }
+    return null;
+  }, [backendAvailable, refreshDownloadQueue]);
+
+  // ── Leftist Tree — Priority Play Queue ────────────────────────────────────
+
+  const refreshPlayQueue = useCallback(async () => {
+    if (!backendAvailable) return;
+    const q = await backendGet<Song[]>('api/playqueue?limit=50');
+    if (q) setPlayQueue(q);
+  }, [backendAvailable]);
+
+  const addToPlayQueue = useCallback(async (song: Song, priority = 2) => {
+    if (!backendAvailable) return;
+    await backendPost('api/playqueue/add', { song, priority });
+    await refreshPlayQueue();
+  }, [backendAvailable, refreshPlayQueue]);
+
+  const popPlayQueue = useCallback(async (): Promise<Song | null> => {
+    if (!backendAvailable) return null;
+    const r = await backendPost<{ ok: boolean; song: Song }>('api/playqueue/next', {});
+    if (r?.ok) { await refreshPlayQueue(); return r.song; }
+    return null;
+  }, [backendAvailable, refreshPlayQueue]);
+
+  // ── Pairing Heap — Collaborative Queue ────────────────────────────────────
+
+  const refreshCollabQueue = useCallback(async () => {
+    if (!backendAvailable) return;
+    const q = await backendGet<Song[]>('api/collab/queue?limit=50');
+    if (q) setCollabQueue(q);
+  }, [backendAvailable]);
+
+  const voteForSong = useCallback(async (song: Song) => {
+    if (!backendAvailable) return;
+    await backendPost('api/collab/vote', { song });
+    await refreshCollabQueue();
+  }, [backendAvailable, refreshCollabQueue]);
+
+  // ── Suffix Array — Substring Search ───────────────────────────────────────
+
+  const suffixSearch = useCallback(async (query: string) => {
+    if (!backendAvailable || !query.trim()) { setSuffixResults([]); return; }
+    const r = await backendGet<Song[]>(`api/lyrics/search?q=${encodeURIComponent(query)}&limit=20`);
+    if (r) setSuffixResults(r);
+  }, [backendAvailable]);
+
+  // ── Treap — Shuffle ───────────────────────────────────────────────────────
+
+  const getShuffle = useCallback(async () => {
+    if (!backendAvailable) return;
+    const r = await backendGet<Song[]>('api/shuffle/get?limit=20');
+    if (r) setShuffledSongs(r);
+  }, [backendAvailable]);
+
+  const reRandomize = useCallback(async () => {
+    if (!backendAvailable) return;
+    await backendPost('api/shuffle/rerandomize', {});
+    await getShuffle();
+  }, [backendAvailable, getShuffle]);
+
+  // ── Skip List — Playlist History ──────────────────────────────────────────
+
+  const refreshPlaylistHistory = useCallback(async (playlistName: string) => {
+    if (!backendAvailable || !username) return;
+    const r = await backendGet<{ versions: {version:number;songCount:number}[] }>(`api/playlists/history/${username}/${playlistName}`);
+    if (r?.versions) setPlaylistVersions(r.versions);
+  }, [backendAvailable, username]);
+
+  const undoPlaylist = useCallback(async (playlistName: string) => {
+    if (!backendAvailable || !username) return;
+    const r = await backendPost<{ ok: boolean; songs: Song[] }>(`api/playlists/undo/${username}/${playlistName}`, {});
+    if (r?.ok && currentPlaylistName === playlistName) {
+      setPlaylistSongs(r.songs);
+    }
+    await refreshPlaylists();
+    await refreshPlaylistHistory(playlistName);
+  }, [backendAvailable, username, currentPlaylistName, refreshPlaylists, refreshPlaylistHistory]);
+
+  // ── Patricia Trie Stats ───────────────────────────────────────────────────
+
+  const refreshTrieStats = useCallback(async () => {
+    if (!backendAvailable) return;
+    const r = await backendGet<{ nodeCount: number }>('api/search/trie-stats');
+    if (r) setTrieNodeCount(r.nodeCount);
+  }, [backendAvailable]);
 
   const value: MusicContextType = {
     selectedGenres,
@@ -283,6 +570,10 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     topCharts,
     recentlyPlayed,
     searchResults,
+    likedSongs,
+    playlists,
+    playlistSongs,
+    currentPlaylistName,
     setSelectedGenres,
     completeOnboarding,
     search,
@@ -290,6 +581,36 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     refreshTopCharts,
     refreshRecentlyPlayed,
     loadMoreSongs,
+    toggleLike,
+    isLiked,
+    refreshLikedSongs,
+    createPlaylist,
+    addToPlaylist,
+    removeFromPlaylist,
+    deletePlaylist,
+    loadPlaylist,
+    refreshPlaylists,
+    downloadQueue,
+    addToDownloadQueue,
+    popDownload,
+    refreshDownloadQueue,
+    playQueue,
+    addToPlayQueue,
+    popPlayQueue,
+    refreshPlayQueue,
+    collabQueue,
+    voteForSong,
+    refreshCollabQueue,
+    suffixResults,
+    suffixSearch,
+    shuffledSongs,
+    getShuffle,
+    reRandomize,
+    playlistVersions,
+    undoPlaylist,
+    refreshPlaylistHistory,
+    trieNodeCount,
+    refreshTrieStats,
   };
 
   return <MusicContext.Provider value={value}>{children}</MusicContext.Provider>;

@@ -46,7 +46,7 @@ export function SongSection({
       ) : variant === 'grid' ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {songs.map((song) => (
-            <SongCard key={song.trackId} song={song} />
+            <SongCard key={song.trackId} song={song} contextSongs={songs} />
           ))}
         </div>
       ) : (
@@ -58,6 +58,7 @@ export function SongSection({
               variant="list"
               showPlayCount={showPlayCount}
               rank={showRank ? index + 1 : undefined}
+              contextSongs={songs}
             />
           ))}
         </div>
@@ -102,33 +103,20 @@ export function TopChartsSection({ songs }: TopChartsSectionProps) {
   );
 }
 
-// Recently Played Section — Splay Tree NOT YET IMPLEMENTED
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// Recently Played Section — Splay Tree
 interface RecentlyPlayedSectionProps {
   songs: Song[];
 }
 
-export function RecentlyPlayedSection(_props: RecentlyPlayedSectionProps) {
+export function RecentlyPlayedSection({ songs }: RecentlyPlayedSectionProps) {
   return (
-    <section className="mb-8">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold text-foreground">Recently Played</h2>
-        <span className="text-xs px-2 py-1 rounded-full bg-secondary text-muted-foreground flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-yellow-500" />
-          Splay Tree
-        </span>
-      </div>
-      <div className="flex items-start gap-3 p-4 rounded-lg border border-yellow-500/30 bg-yellow-500/5">
-        <span className="text-yellow-500 text-lg mt-0.5">⚠️</span>
-        <div>
-          <p className="text-sm font-medium text-yellow-500">Splay Tree — Not Yet Implemented</p>
-          <p className="text-xs text-muted-foreground mt-1">
-            Recently played history requires the Splay Tree data structure, which has not been
-            implemented in the C++ backend yet. This section will be available in a future update.
-          </p>
-        </div>
-      </div>
-    </section>
+    <SongSection
+      title="Recently Played"
+      songs={songs}
+      dsLabel="Splay Tree"
+      variant="grid"
+      emptyMessage="Play a song to start building your history"
+    />
   );
 }
 
@@ -158,7 +146,7 @@ export function AllSongsSection({ songs, onLoadMore, isLoading }: AllSongsSectio
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {songs.map((song) => (
-              <SongCard key={song.trackId} song={song} />
+              <SongCard key={song.trackId} song={song} contextSongs={songs} />
             ))}
           </div>
 

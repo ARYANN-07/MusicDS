@@ -1,7 +1,8 @@
 'use client';
 
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Heart } from 'lucide-react';
 import { useAudio } from '@/lib/audio-context';
+import { useMusic } from '@/lib/music-context';
 import { Slider } from '@/components/ui/slider';
 import { cn } from '@/lib/utils';
 
@@ -24,6 +25,7 @@ export function Player() {
     seek,
     setVolume,
   } = useAudio();
+  const { isLiked, toggleLike } = useMusic();
 
   if (!currentSong) {
     return (
@@ -60,6 +62,13 @@ export function Player() {
             {currentSong.artistName}
           </p>
         </div>
+        <button
+          onClick={() => toggleLike(currentSong)}
+          className="ml-2 p-1.5 rounded-full hover:bg-secondary transition-colors"
+          aria-label={isLiked(currentSong.trackId) ? 'Unlike' : 'Like'}
+        >
+          <Heart className={cn('w-4 h-4', isLiked(currentSong.trackId) ? 'fill-red-500 text-red-500' : 'text-muted-foreground')} />
+        </button>
       </div>
 
       {/* Player Controls */}

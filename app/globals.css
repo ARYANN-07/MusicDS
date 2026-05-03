@@ -123,3 +123,30 @@
     @apply bg-background text-foreground;
   }
 }
+
+@utility scrollbar-hide {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@utility scrollbar-thin {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--sidebar-border);
+    border-radius: 20px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--sidebar-foreground);
+  }
+  scrollbar-width: thin;
+  scrollbar-color: var(--sidebar-border) transparent;
+}
