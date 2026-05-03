@@ -1,6 +1,6 @@
 'use client';
 
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Heart } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, Heart, Users, Shuffle } from 'lucide-react';
 import { useAudio } from '@/lib/audio-context';
 import { useMusic } from '@/lib/music-context';
 import { Slider } from '@/components/ui/slider';
@@ -24,6 +24,10 @@ export function Player() {
     playPrevious,
     seek,
     setVolume,
+    playlist,
+    playShuffled,
+    useCollabQueue,
+    toggleCollabQueue,
   } = useAudio();
   const { isLiked, toggleLike } = useMusic();
 
@@ -36,9 +40,9 @@ export function Player() {
   }
 
   return (
-    <div className="h-20 bg-card border-t border-border px-4 flex items-center gap-4">
+    <div className="h-20 bg-card border-t border-border px-4 flex items-center justify-between">
       {/* Song Info */}
-      <div className="flex items-center gap-3 w-64 flex-shrink-0">
+      <div className="flex items-center gap-3 w-[30%] min-w-[180px]">
         {currentSong.artworkUrl100 ? (
           <img
             src={currentSong.artworkUrl100}
@@ -64,7 +68,7 @@ export function Player() {
         </div>
         <button
           onClick={() => toggleLike(currentSong)}
-          className="ml-2 p-1.5 rounded-full hover:bg-secondary transition-colors"
+          className="ml-2 p-1.5 rounded-full hover:bg-secondary transition-colors flex-shrink-0"
           aria-label={isLiked(currentSong.trackId) ? 'Unlike' : 'Like'}
         >
           <Heart className={cn('w-4 h-4', isLiked(currentSong.trackId) ? 'fill-red-500 text-red-500' : 'text-muted-foreground')} />
@@ -72,9 +76,17 @@ export function Player() {
       </div>
 
       {/* Player Controls */}
-      <div className="flex-1 flex flex-col items-center gap-1 max-w-xl">
+      <div className="flex flex-col items-center justify-center gap-1 w-[40%] max-w-2xl">
         {/* Buttons */}
         <div className="flex items-center gap-4">
+          <button
+            onClick={toggleCollabQueue}
+            className={cn('transition-colors', useCollabQueue ? 'text-green-500' : 'text-muted-foreground hover:text-foreground')}
+            title={useCollabQueue ? 'Party Mode: ON (Collab Queue active)' : 'Party Mode: OFF (Collab Queue ignored)'}
+          >
+            <Users className="w-5 h-5" />
+          </button>
+          
           <button
             onClick={playPrevious}
             className="text-muted-foreground hover:text-foreground transition-colors"
@@ -101,6 +113,14 @@ export function Player() {
             aria-label="Next song"
           >
             <SkipForward className="w-5 h-5" />
+          </button>
+
+          <button
+            onClick={() => playShuffled(playlist)}
+            className="text-muted-foreground hover:text-foreground transition-colors ml-2"
+            title="Shuffle Context (powered by Treap)"
+          >
+            <Shuffle className="w-4 h-4" />
           </button>
         </div>
 
@@ -129,7 +149,7 @@ export function Player() {
       </div>
 
       {/* Volume */}
-      <div className="flex items-center gap-2 w-32 flex-shrink-0">
+      <div className="flex items-center justify-end gap-2 w-[30%] min-w-[180px]">
         <button
           onClick={() => setVolume(volume === 0 ? 0.7 : 0)}
           className="text-muted-foreground hover:text-foreground transition-colors"
@@ -141,13 +161,14 @@ export function Player() {
             <Volume2 className="w-5 h-5" />
           )}
         </button>
-        <Slider
-          value={[volume * 100]}
-          max={100}
-          step={1}
-          onValueChange={([value]) => setVolume(value / 100)}
-          className="flex-1"
-        />
+        <div className="w-24">
+          <Slider
+            value={[volume * 100]}
+            max={100}
+            step={1}
+            onValueChange={([value]) => setVolume(value / 100)}
+          />
+        </div>
       </div>
     </div>
   );

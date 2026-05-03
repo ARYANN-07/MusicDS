@@ -29,6 +29,9 @@ interface AudioContextType {
   setVolume: (volume: number) => void;
   setPlaylist: (songs: Song[], startIndex?: number) => void;
   addToPlaylist: (song: Song) => void;
+  playShuffled: (songs: Song[]) => Promise<void>;
+  useCollabQueue: boolean;
+  toggleCollabQueue: () => void;
 }
 
 const AudioContext = createContext<AudioContextType | null>(null);
@@ -55,6 +58,12 @@ export function AudioProvider({ children }: AudioProviderProps) {
   const [volume, setVolumeState] = useState(0.7);
   const [playlist, setPlaylistState] = useState<Song[]>([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
+  const lastValidIndexRef = useRef<number>(-1);
+  const [useCollabQueue, setUseCollabQueue] = useState(true);
+  
+  const toggleCollabQueue = useCallback(() => {
+    setUseCollabQueue(prev => !prev);
+  }, []);
 
   // Initialize audio element
   useEffect(() => {
@@ -70,17 +79,12 @@ export function AudioProvider({ children }: AudioProviderProps) {
         setDuration(audioRef.current?.duration || 0);
       });
       
-      audioRef.current.addEventListener('ended', () => {
-        setIsPlaying(false);
-        // Auto-play next song
-        const nextSong = playlistBST.getNextByIndex(currentIndex);
-        if (nextSong) {
-          playSongInternal(nextSong, currentIndex + 1);
-        }
-      });
-      
       audioRef.current.addEventListener('error', (e) => {
-        console.error('Audio error:', e);
+        // Only log actual errors, not empty objects
+        const target = e.target as HTMLAudioElement;
+        if (target && target.error) {
+          console.error('Audio error:', target.error.message || target.error.code);
+        }
         setIsPlaying(false);
       });
     }
@@ -96,6 +100,8 @@ export function AudioProvider({ children }: AudioProviderProps) {
   // Internal play function
   const playSongInternal = useCallback((song: Song, index: number) => {
     if (!audioRef.current || !song.previewUrl) return;
+    
+    if (index >= 0) lastValidIndexRef.current = index;
     
     audioRef.current.src = song.previewUrl;
     audioRef.current.load();
@@ -181,13 +187,56 @@ export function AudioProvider({ children }: AudioProviderProps) {
     }
   }, [isPlaying, currentSong]);
 
-  // Play next song (using Threaded BST)
-  const playNext = useCallback(() => {
-    if (currentIndex < 0) return;
+  // Play next song (Checks Leftist Tree Priority Queue first)
+  const playNext = useCallback(async () => {
+    // 1. Check Priority Queue (Leftist Tree)
+    try {
+      const res = await fetch('/api/backend/api/playqueue/next', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.ok && data.song) {
+          playSongInternal(data.song, -1); // -1 index means it came from priority queue
+          return;
+        }
+      }
+    } catch (e) {
+      // Backend not running or queue empty, fallback to normal playlist
+    }
+
+    // 2. Check Collab Queue (Pairing Heap) if enabled
+    if (useCollabQueue) {
+      try {
+        const res = await fetch('/api/backend/api/collab/pop', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({}),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.ok && data.song) {
+            playSongInternal(data.song, -1); 
+            return;
+          }
+        }
+      } catch (e) {}
+    }
+
+    // 3. Fallback to normal playlist queue
+    let fallbackIdx = currentIndex >= 0 ? currentIndex : lastValidIndexRef.current;
+
+    if (fallbackIdx < 0) {
+      const firstSong = playlistBST.getFirst();
+      if (firstSong) playSongInternal(firstSong, 0);
+      return;
+    }
     
-    const nextSong = playlistBST.getNextByIndex(currentIndex);
+    const nextSong = playlistBST.getNextByIndex(fallbackIdx);
     if (nextSong) {
-      playSongInternal(nextSong, currentIndex + 1);
+      playSongInternal(nextSong, fallbackIdx + 1);
     } else {
       // Loop back to start
       const firstSong = playlistBST.getFirst();
@@ -195,7 +244,14 @@ export function AudioProvider({ children }: AudioProviderProps) {
         playSongInternal(firstSong, 0);
       }
     }
-  }, [currentIndex, playSongInternal]);
+  }, [currentIndex, playSongInternal, useCollabQueue]);
+
+  // Bind playNext to the audio ended event so it always uses the latest state
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.onended = playNext;
+    }
+  }, [playNext]);
 
   // Play previous song (using Threaded BST)
   const playPrevious = useCallback(() => {
@@ -254,6 +310,34 @@ export function AudioProvider({ children }: AudioProviderProps) {
     }
   }, []);
 
+  // Play Shuffled using Treap
+  const playShuffled = useCallback(async (songs: Song[]) => {
+    if (!songs || songs.length === 0) return;
+    try {
+      await fetch('/api/backend/api/shuffle/clear', { method: 'DELETE' });
+      for (const song of songs) {
+        await fetch('/api/backend/api/shuffle/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ song, score: Math.random() * 100 }),
+        });
+      }
+      const res = await fetch(`/api/backend/api/shuffle/get?limit=${songs.length}`);
+      if (res.ok) {
+        const shuffled = await res.json();
+        if (shuffled && shuffled.length > 0) {
+          setPlaylist(shuffled, 0);
+          return;
+        }
+      }
+    } catch (e) {
+      console.error('Shuffle failed:', e);
+    }
+    // Fallback if backend shuffle fails
+    const shuffled = [...songs].sort(() => Math.random() - 0.5);
+    setPlaylist(shuffled, 0);
+  }, [setPlaylist]);
+
   const value: AudioContextType = {
     currentSong,
     isPlaying,
@@ -272,6 +356,9 @@ export function AudioProvider({ children }: AudioProviderProps) {
     setVolume,
     setPlaylist,
     addToPlaylist,
+    playShuffled,
+    useCollabQueue,
+    toggleCollabQueue
   };
 
   return (

@@ -49,10 +49,13 @@ export function SongCard({ song, showPlayCount, rank, variant = 'default', conte
 
   if (variant === 'list') {
     return (
-      <button
+      <div
+        role="button"
+        tabIndex={0}
         onClick={handleClick}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick(); }}
         className={cn(
-          'w-full flex items-center gap-3 p-2 rounded-lg transition-colors group',
+          'w-full flex items-center gap-3 p-2 rounded-lg transition-colors group cursor-pointer text-left',
           isCurrentSong ? 'bg-primary/10' : 'hover:bg-accent'
         )}
       >
@@ -146,7 +149,7 @@ export function SongCard({ song, showPlayCount, rank, variant = 'default', conte
                 <ListMusic className="mr-2 w-4 h-4" /> Add to Queue
               </DropdownMenuItem>
               <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); addToPlayQueue(song); }}>
-                <Layers className="mr-2 w-4 h-4" /> Add to Priority Play
+                <Layers className="mr-2 w-4 h-4" /> Play Next
               </DropdownMenuItem>
               <DropdownMenuItem onSelect={(e) => { e.stopPropagation(); addToDownloadQueue(song); }}>
                 <Download className="mr-2 w-4 h-4" /> Add to Download Queue
@@ -179,16 +182,19 @@ export function SongCard({ song, showPlayCount, rank, variant = 'default', conte
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      </button>
+      </div>
     );
   }
 
   if (variant === 'compact') {
     return (
-      <button
+      <div
+        role="button"
+        tabIndex={0}
         onClick={handleClick}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick(); }}
         className={cn(
-          'flex items-center gap-2 p-2 rounded-lg transition-colors group',
+          'flex items-center gap-2 p-2 rounded-lg transition-colors group cursor-pointer text-left',
           isCurrentSong ? 'bg-primary/10' : 'hover:bg-accent'
         )}
       >
@@ -284,15 +290,18 @@ export function SongCard({ song, showPlayCount, rank, variant = 'default', conte
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      </button>
+      </div>
     );
   }
 
   // Default card variant
   return (
-    <button
+    <div
+      role="button"
+      tabIndex={0}
       onClick={handleClick}
-      className="group p-3 rounded-lg bg-card hover:bg-accent transition-colors text-left"
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick(); }}
+      className="group p-3 rounded-lg bg-card hover:bg-accent transition-colors text-left cursor-pointer"
     >
       {/* Album Art */}
       <div className="relative aspect-square mb-3">
@@ -393,6 +402,6 @@ export function SongCard({ song, showPlayCount, rank, variant = 'default', conte
           </DropdownMenu>
         </div>
       </div>
-    </button>
+    </div>
   );
 }

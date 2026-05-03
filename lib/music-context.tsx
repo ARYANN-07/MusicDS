@@ -58,6 +58,7 @@ interface MusicContextType {
   completeOnboarding: () => Promise<void>;
   search: (query: string) => Promise<void>;
   refreshRecommendations: () => Promise<void>;
+  loadMoreRecommendations: () => Promise<void>;
   refreshTopCharts: () => Promise<void>;
   refreshRecentlyPlayed: () => Promise<void>;
   loadMoreSongs: () => Promise<void>;
@@ -180,14 +181,17 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     (async () => {
       // Preferences from AVL Tree
       const prefs = await backendGet<UserPreferences>(`api/preferences/${username}`);
+      let currentGenres: string[] = [];
       if (prefs?.selectedGenres?.length) {
         setSelectedGenresState(prefs.selectedGenres);
+        currentGenres = prefs.selectedGenres;
         setHasOnboarded(true);
       } else {
         // Check B+ Tree user record for saved genres
         const user = await backendGet<{ selectedGenres: string[] }>(`api/auth/user/${username}`);
         if (user?.selectedGenres?.length) {
           setSelectedGenresState(user.selectedGenres);
+          currentGenres = user.selectedGenres;
           setHasOnboarded(true);
         } else {
           setHasOnboarded(false);
@@ -202,7 +206,26 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       if (charts && charts.length > 0) setTopCharts(charts.map(e => e.song));
 
       // Recommendations from Fibonacci Heap
-      const recs = await backendGet<{ song: Song }[]>('api/recommendations/top?limit=10');
+      let recs = await backendGet<{ song: Song }[]>('api/recommendations/top?limit=10');
+      
+      // Auto-regenerate recommendations if the heap is empty (e.g. after server restart)
+      if ((!recs || recs.length === 0) && currentGenres.length > 0) {
+        try {
+          const songs = await getSongsByGenres(currentGenres, 15);
+          for (const song of songs) {
+            const genreBoost = currentGenres.includes(song.primaryGenreName.toLowerCase()) ? 20 : 0;
+            await backendPost('api/recommendations/add', {
+              song,
+              score: 50 + Math.random() * 30,
+              genreBoost,
+            });
+          }
+          recs = await backendGet<{ song: Song }[]>('api/recommendations/top?limit=10');
+        } catch (e) {
+          console.error('Failed to regenerate recommendations on login', e);
+        }
+      }
+
       if (recs && recs.length > 0) setRecommendations(recs.map(e => e.song));
 
       // Recently played from Splay Tree
@@ -219,6 +242,20 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       // Playlists
       const pls = await backendGet<PlaylistInfo[]>(`api/playlists/${username}`);
       if (pls) setPlaylists(pls);
+
+      // Auto-populate allSongs and Search Indexes if empty (fresh session)
+      if (currentGenres.length > 0) {
+        try {
+          const baseSongs = await getSongsByGenres(currentGenres, 30);
+          setAllSongs(baseSongs);
+          // Re-index to ensure Search and Substring Search work immediately
+          backendPost('api/search/index', { songs: baseSongs }).catch(() => {});
+          backendPost('api/search/index-compressed', { songs: baseSongs }).catch(() => {});
+          backendPost('api/lyrics/index', { songs: baseSongs }).catch(() => {});
+        } catch (e) {
+          console.error('Failed to populate base songs', e);
+        }
+      }
     })();
   }, [backendAvailable, isLoggedIn, username]);
 
@@ -349,6 +386,31 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     if (recent) setRecentlyPlayed(recent.map(e => e.song));
   }, [backendAvailable, username]);
 
+  const loadMoreRecommendations = useCallback(async () => {
+    if (selectedGenres.length === 0 || !backendAvailable) return;
+    setIsLoading(true);
+    try {
+      // Fetch fresh songs and score them
+      const songs = await getSongsByGenres(selectedGenres, 15);
+      for (const song of songs) {
+        const genreBoost = selectedGenres.includes(song.primaryGenreName.toLowerCase()) ? 20 : 0;
+        await backendPost('api/recommendations/add', {
+          song,
+          score: 50 + Math.random() * 30,
+          genreBoost,
+        });
+      }
+      // Get an expanded top list (add 10 to current size, max 50)
+      const newLimit = Math.min(recommendations.length + 10, 50);
+      const recs = await backendGet<{ song: Song }[]>(`api/recommendations/top?limit=${newLimit}`);
+      if (recs) setRecommendations(recs.map(e => e.song));
+    } catch (err) {
+      console.error('loadMoreRecommendations error:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [selectedGenres, backendAvailable, recommendations.length]);
+
   const loadMoreSongs = useCallback(async () => {
     if (selectedGenres.length === 0) return;
     setIsLoading(true);
@@ -356,9 +418,21 @@ export function MusicProvider({ children }: { children: ReactNode }) {
       const more = await getSongsByGenres(selectedGenres, 10);
       const ids  = new Set(allSongs.map(s => s.trackId));
       const newSongs = more.filter(s => !ids.has(s.trackId));
-      setAllSongs(prev => [...prev, ...newSongs]);
+      const updatedSongs = [...allSongs, ...newSongs];
+      
+      setAllSongs(updatedSongs);
+      
       if (backendAvailable && newSongs.length > 0) {
+        // Tries can handle incremental insertions
         backendPost('api/search/index', { songs: newSongs }).catch(() => {});
+        backendPost('api/search/index-compressed', { songs: newSongs }).catch(() => {});
+        
+        // Suffix Array needs all songs to rebuild the index
+        backendPost('api/lyrics/index', { songs: updatedSongs }).catch(() => {});
+        
+        for (const song of newSongs) {
+          backendPost('api/shuffle/add', { song, score: 50 + Math.random() * 50 }).catch(() => {});
+        }
       }
     } catch (err) {
       console.error('loadMoreSongs error:', err);
@@ -523,10 +597,26 @@ export function MusicProvider({ children }: { children: ReactNode }) {
   // ── Treap — Shuffle ───────────────────────────────────────────────────────
 
   const getShuffle = useCallback(async () => {
-    if (!backendAvailable) return;
+    if (!backendAvailable || allSongs.length === 0) return;
+    
+    // Pick up to 20 random songs from allSongs
+    const shuffledCopy = [...allSongs].sort(() => Math.random() - 0.5);
+    const sample = shuffledCopy.slice(0, 20);
+
+    // Load them into the Treap
+    await fetch('/api/backend/api/shuffle/clear', { method: 'DELETE' });
+    for (const song of sample) {
+      await fetch('/api/backend/api/shuffle/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ song, score: Math.random() * 100 }),
+      });
+    }
+
+    // Retrieve from Treap
     const r = await backendGet<Song[]>('api/shuffle/get?limit=20');
     if (r) setShuffledSongs(r);
-  }, [backendAvailable]);
+  }, [backendAvailable, allSongs]);
 
   const reRandomize = useCallback(async () => {
     if (!backendAvailable) return;
@@ -578,6 +668,7 @@ export function MusicProvider({ children }: { children: ReactNode }) {
     completeOnboarding,
     search,
     refreshRecommendations,
+    loadMoreRecommendations,
     refreshTopCharts,
     refreshRecentlyPlayed,
     loadMoreSongs,

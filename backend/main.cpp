@@ -96,6 +96,13 @@ static void saveAllData() {
         }
     }
 
+    // Save collab queue
+    data["collabQueue"] = json::array();
+    auto collabSongs = g_collabQueue.getTop(-1);
+    for (auto& s : collabSongs) {
+        data["collabQueue"].push_back(s);
+    }
+
     std::ofstream f(DATA_FILE);
     if (f.is_open()) {
         f << data.dump(2);
@@ -143,6 +150,19 @@ static void loadAllData() {
                         ud->likeFilter.add(trackId);
                     }
                 }
+            }
+        }
+    }
+
+    // Restore collab queue
+    if (data.count("collabQueue")) {
+        for (auto& s : data["collabQueue"]) {
+            int trackId = s.value("trackId", 0);
+            int votes = s.value("_votes", 1);
+            if (trackId != 0) {
+                json song = s;
+                song.erase("_votes");
+                g_collabQueue.insert(votes, trackId, song);
             }
         }
     }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { AudioProvider } from '@/lib/audio-context';
+import { AudioProvider, useAudio } from '@/lib/audio-context';
 import { AuthProvider, useAuth } from '@/lib/auth-context';
 import { MusicProvider, useMusic } from '@/lib/music-context';
 import { LandingPage } from '@/components/landing-page';
@@ -45,9 +45,11 @@ function MusicApp() {
     shuffledSongs, getShuffle, reRandomize,
     playlistVersions, undoPlaylist, refreshPlaylistHistory,
     trieNodeCount, refreshTrieStats,
+    loadMoreRecommendations,
   } = useMusic();
 
   const { currentUser } = useAuth();
+  const { useCollabQueue, toggleCollabQueue } = useAudio();
 
   const [activeSection, setActiveSection] = useState('home');
   const [suffixQuery, setSuffixQuery] = useState('');
@@ -133,7 +135,11 @@ function MusicApp() {
         return (
           <div className="p-6">
             <h1 className="text-2xl font-bold text-foreground mb-6">Recommended For You</h1>
-            <RecommendationsSection songs={recommendations} />
+            <RecommendationsSection 
+              songs={recommendations} 
+              onLoadMore={loadMoreRecommendations}
+              isLoading={isLoading}
+            />
           </div>
         );
 
@@ -244,9 +250,17 @@ function MusicApp() {
                 <h1 className="text-2xl font-bold text-foreground">Collaborative Queue</h1>
                 <p className="text-sm text-muted-foreground">Powered by Pairing Heap • Vote to boost songs</p>
               </div>
-              <button onClick={refreshCollabQueue} className="px-4 py-2 bg-secondary text-foreground rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors">
-                Refresh
-              </button>
+              <div className="flex items-center gap-3">
+                <button 
+                  onClick={toggleCollabQueue} 
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors border ${useCollabQueue ? 'bg-green-500/10 text-green-500 border-green-500/30 hover:bg-green-500/20' : 'bg-secondary text-muted-foreground border-transparent hover:text-foreground hover:bg-secondary/80'}`}
+                >
+                  Party Mode: {useCollabQueue ? 'ON' : 'OFF'}
+                </button>
+                <button onClick={refreshCollabQueue} className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors">
+                  Refresh
+                </button>
+              </div>
             </div>
             {collabQueue.length > 0 ? (
               <div className="space-y-2">
