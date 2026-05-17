@@ -150,6 +150,13 @@ static void loadAllData() {
                         ud->likeFilter.add(trackId);
                     }
                 }
+                if (plName != "__liked__") {
+                    SkipList* sl = getPlaylistHistory(uname, plName);
+                    if (sl->size() == 0) {
+                        g_playlistVersions_counter++;
+                        sl->insert(g_playlistVersions_counter, snapshotPlaylist(ud, plName));
+                    }
+                }
             }
         }
     }
@@ -442,6 +449,9 @@ int main() {
             res.status = 409; res.set_content(R"({"error":"Playlist already exists"})"); return;
         }
         ud->playlists[name] = new DoublyLinkedList();
+        SkipList* sl = getPlaylistHistory(username, name);
+        g_playlistVersions_counter++;
+        sl->insert(g_playlistVersions_counter, json::array());
         saveAllData();
         res.set_content(R"({"ok":true})");
     });
@@ -764,11 +774,12 @@ int main() {
         std::string username = req.getParam("username", "");
         std::string plName = req.getParam("playlistName", "");
         SkipList* sl = getPlaylistHistory(username, plName);
+        if (sl->size() <= 1) { res.status = 400; res.set_content(R"({"error":"Nothing to undo"})"); return; }
         int currVer = sl->getLatestVersion();
         if (currVer <= 0) { res.status = 400; res.set_content(R"({"error":"Nothing to undo"})"); return; }
-        // Find version before current
-        json prevSnapshot = sl->search(currVer - 1);
-        if (prevSnapshot.is_null()) { res.status = 400; res.set_content(R"({"error":"No previous version"})"); return; }
+        
+        json prevSnapshot = sl->popLatest();
+        
         // Restore playlist from snapshot
         UserData* ud = getUserData(username);
         if (ud->playlists.find(plName) != ud->playlists.end()) {
@@ -779,11 +790,9 @@ int main() {
             int tid = song.value("trackId", 0);
             ud->playlists[plName]->pushBack(tid, song);
         }
-        // Save the undo as a new version
-        g_playlistVersions_counter++;
-        sl->insert(g_playlistVersions_counter, prevSnapshot);
+        
         saveAllData();
-        json resp = {{"ok", true}, {"version", g_playlistVersions_counter}, {"songs", prevSnapshot}};
+        json resp = {{"ok", true}, {"version", sl->getLatestVersion()}, {"songs", prevSnapshot}};
         res.set_content(resp.dump());
     });
 

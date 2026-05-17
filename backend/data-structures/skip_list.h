@@ -27,6 +27,7 @@ public:
     int getLatestVersion() const { return latestVersion_; }
     std::vector<json> getAllVersions() const;
     int size() const { return count_; }
+    json popLatest();
 
 private:
     int maxLevel_;

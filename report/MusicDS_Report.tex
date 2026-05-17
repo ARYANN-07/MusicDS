@@ -1,0 +1,283 @@
+% ============================================================================
+% MusicDS Report — VIT Pune Format
+% ============================================================================
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{fancybox}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{graphicx}
+
+\setstretch{1.15}
+\hypersetup{colorlinks=false}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+% Remove default section numbering
+\setcounter{secnumdepth}{0}
+
+% ============================================================================
+%                              TITLE PAGE
+% ============================================================================
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+
+\thispagestyle{empty}
+\setlength{\fboxrule}{2pt}
+\fbox{\begin{minipage}[c][0.92\textheight][t]{0.88\textwidth}
+\vspace{1cm}
+\begin{center}
+
+{\small Bansilal Ramnath Agarwal Charitable Trust's}\\[4pt]
+{\normalsize \textbf{VISHWAKARMA INSTITUTE OF TECHNOLOGY -- PUNE}}
+
+\vspace{1.5cm}
+
+{\Large \textbf{Advance Data Structures}}
+
+\vspace{2.5cm}
+
+\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{|p{4cm}|p{7.5cm}|}
+\hline
+\textbf{Division} & CS-A \\             % ← Replace
+\hline
+\textbf{Batch} & 2 \\                   % ← Replace
+\hline
+\textbf{Group} & 12 \\                  % ← Replace
+\hline
+\textbf{GR-no} & XXXXXXXXX \\           % ← Replace with your GR numbers
+\hline
+\textbf{Roll no} & XX \\                % ← Replace with your roll numbers
+\hline
+\textbf{Name} & ARYAN XXXX \\           % ← Replace with your full name(s)
+\hline
+\end{tabular}
+
+\end{center}
+\vfill
+\end{minipage}}
+
+\end{center}
+\end{titlepage}
+
+% ============================================================================
+%                          PROBLEM STATEMENT
+% ============================================================================
+
+\textbf{Problem Statement}
+
+Modern music streaming platforms must handle fundamentally different types of operations simultaneously --- search autocomplete, playlist management, user authentication, recommendation ranking, collaborative voting, shuffle playback, and undo/redo history. Spatial proximity queries, integer-based lookups, string pattern matching on song metadata, priority-based queue management, and probabilistic membership testing are all distinct computational problems that no single data structure can handle efficiently. Existing general-purpose solutions such as standard library containers (\texttt{std::vector}, \texttt{std::map}) or relational databases apply the same access pattern to every query type, resulting in suboptimal performance across most use cases.
+
+This project addresses the need for a purpose-built engine that matches each query type to the data structure best suited to solve it, demonstrating through implementation and benchmarking that the right tool for each problem yields measurably superior performance.
+
+\textbf{Objective:}
+\begin{itemize}[leftmargin=2em, itemsep=2pt]
+    \item To design and implement a C++ engine that powers a full-stack music streaming platform using 14 advanced data structures simultaneously.
+    \item To implement a B+ Tree for $O(\log n)$ user authentication and credential retrieval.
+    \item To implement an AVL Tree for strictly balanced $O(\log n)$ user preference storage.
+    \item To implement a Doubly Linked List for $O(1)$ playlist insertion, deletion, and bidirectional traversal.
+    \item To implement a Bloom Filter for $O(1)$ probabilistic liked-song membership checks.
+    \item To implement a Splay Tree exploiting temporal locality for $O(\log n)$ amortised recently-played history access.
+    \item To implement a Patricia Trie for memory-efficient $O(k)$ compressed search autocomplete.
+    \item To implement a Suffix Array for $O(m \log n)$ substring search across song titles and artist names.
+    \item To implement a Leftist Tree for $O(\log n)$ mergeable priority playback queues.
+    \item To implement a Binomial Heap for $O(\log n)$ smart download queue management with merge support.
+    \item To implement a Pairing Heap for amortised $O(1)$ collaborative voting with decrease-key.
+    \item To implement a Fibonacci Heap for amortised $O(1)$ insertion in the recommendation engine.
+    \item To implement a Red-Black Tree for $O(\log n)$ global top charts tracking with fewer rotations than AVL.
+    \item To implement a Treap for expected $O(\log n)$ randomised shuffle playback.
+    \item To implement a Skip List for $O(\log n)$ expected-time playlist version snapshots enabling undo/redo.
+    \item To build a full-stack web interface --- a React/Next.js frontend with a glassmorphism UI communicating via REST APIs to the C++ backend.
+\end{itemize}
+
+% ============================================================================
+%                              CONCEPT
+% ============================================================================
+
+\textbf{Concept:}
+
+\textbf{B+ Tree (Authentication)}\\
+The B+ Tree stores user credentials with all data in leaf nodes and internal nodes acting as a multi-level index. Any value $x$ is located by comparing it against keys at each internal level, descending left or right, until the correct leaf is reached. Leaf nodes are linked for efficient range scans. In MusicDS the B+ Tree indexes all user accounts by username, supporting both instant lookup and sequential traversal --- something a hash map cannot provide for ordered iteration.
+
+\textbf{AVL Tree (User Preferences)}\\
+An AVL Tree is a strictly self-balancing Binary Search Tree. The heights of the two child subtrees of any node differ by at most one. The balance factor is defined as $\text{BF}(v) = h(v.\text{left}) - h(v.\text{right})$, and $|\text{BF}(v)| \leq 1$ is maintained after every insertion and deletion via single or double rotations. In MusicDS the AVL Tree stores user settings such as selected genres and volume preferences, guaranteeing worst-case $O(\log n)$ reads even if users register in alphabetical order.
+
+\textbf{Doubly Linked List (Playlists)}\\
+A Doubly Linked List maintains a chain of nodes where each node contains a \texttt{trackId}, a \texttt{song} JSON payload, and pointers to both the previous and next node. The head and tail pointers allow $O(1)$ insertion at either end. In MusicDS each user playlist is a separate DLL instance. Forward and backward traversal supports ``Next Track'' and ``Previous Track'' playback controls. Deletion given a pointer to the node is $O(1)$.
+
+\textbf{Bloom Filter (Liked Songs)}\\
+A Bloom Filter is a space-efficient probabilistic data structure using a bit array of size $m = 2048$ and $k = 3$ independent hash functions. When a \texttt{trackId} is added, all $k$ bit positions are set to 1. Membership queries return ``possibly in set'' if all $k$ bits are 1, or ``definitely not in set'' if any bit is 0. The false positive probability is $P_{\text{fp}} \approx (1 - e^{-kn/m})^k$. In MusicDS the Bloom Filter provides instant $O(1)$ checks for whether a heart icon should be filled on the UI. False positives are eliminated by a secondary confirmation against the liked-songs DLL.
+
+\textbf{Splay Tree (Recently Played History)}\\
+A Splay Tree is a self-adjusting BST where every accessed element is moved to the root via a sequence of rotations called splaying. Zig, zig-zig, and zig-zag cases handle single, same-direction, and opposite-direction parent-grandparent configurations respectively. In MusicDS each user has an isolated Splay Tree for listening history. If a user replays the same song, it remains at the root, providing amortised $O(\log n)$ access and exploiting temporal locality.
+
+\textbf{Patricia Trie (Compressed Search Autocomplete)}\\
+A Patricia Trie (Practical Algorithm To Retrieve Information Coded in Alphanumeric) is a space-optimised Trie where chains of single-child nodes are compressed into a single edge labelled with the entire substring. For example, the path ``S''$\to$``O''$\to$``N''$\to$``G'' becomes a single ``SONG'' edge. This reduces memory usage by up to 60\% compared to a standard Trie while maintaining $O(k)$ prefix matching where $k$ is the query string length. In MusicDS the Patricia Trie powers the main search bar, indexing both song titles and artist names.
+
+\textbf{Suffix Array (Substring Search)}\\
+A Suffix Array is a sorted array of all suffixes of a string, built in $O(n \log n)$ time. Binary search on the sorted suffixes enables $O(m \log n)$ substring matching for a pattern of length $m$. In MusicDS the Suffix Array complements the Patricia Trie: while the Trie matches only prefixes, the Suffix Array finds songs by any partial word anywhere in the title or artist name (e.g.\ typing ``night'' finds ``After Midnight'').
+
+\textbf{Leftist Tree (Priority Playback Queue)}\\
+A Leftist Tree is a variant of a binary heap that is intentionally skewed to the left. The \textit{s-value} (null path length) of the right child is always less than or equal to that of the left child, ensuring the right spine has length at most $O(\log n)$. This enables $O(\log n)$ merge of two heaps by merging along the right spines. In MusicDS the Leftist Tree powers the ``Add to Priority Play'' feature, allowing users to merge playlist queues efficiently.
+
+\textbf{Binomial Heap (Smart Download Queue)}\\
+A Binomial Heap is a collection of binomial trees where each tree $B_k$ has $2^k$ nodes and follows heap order. The collection maintains at most one tree of each degree. Merge operates in $O(\log n)$ by linking trees of equal degree, analogous to binary addition. In MusicDS the Binomial Heap manages the download queue, enabling the system to prioritise downloads by file size or user tier and merge batch requests.
+
+\textbf{Pairing Heap (Collaborative Voting Queue)}\\
+A Pairing Heap is a multi-way tree heap offering amortised $O(1)$ insertion and decrease-key. When a song receives a vote, \texttt{decrease\_key} detaches the node and re-attaches it to the root, causing it to bubble toward the top. \texttt{extract\_max} uses a two-pass pairing strategy to recombine children. In MusicDS the Pairing Heap powers the ``Vote in Collab Queue'' feature where users vote on what plays next in real time.
+
+\textbf{Fibonacci Heap (Recommendations Engine)}\\
+A Fibonacci Heap is a forest of heap-ordered trees with a relaxed structure. Insertions and decrease-key are $O(1)$ amortised. Consolidation is deferred until \texttt{extract\_max} is called, at which point trees of equal degree are linked. Cascading cuts ensure no node loses more than one child without itself being cut, maintaining the amortised bounds. In MusicDS the backend calculates recommendation scores based on the user's selected genres at signup. The Fibonacci Heap ingests thousands of candidate songs in $O(1)$ each and extracts the top-$k$ in $O(k \log n)$.
+
+\textbf{Red-Black Tree (Top Charts)}\\
+A Red-Black Tree is a self-balancing BST using colour bits to enforce five invariants ensuring the longest root-to-leaf path is no more than twice the shortest. It requires fewer rotations per insertion/deletion than an AVL Tree (at most 2 rotations for insertion, at most 3 for deletion). In MusicDS the Red-Black Tree tracks global play counts for the ``Top Charts'' section, handling highly volatile increment-and-rebalance workloads efficiently.
+
+\textbf{Treap (Randomised Shuffle Play)}\\
+A Treap is a hybrid of a BST and a Heap. Each node has a BST key (\texttt{trackId}) and a randomly assigned heap priority. The BST property is maintained on keys and the max-heap property on priorities, producing a random BST shape with expected $O(\log n)$ depth. In MusicDS the Treap powers the ``Shuffle Play'' feature. Calling \texttt{reRandomize()} reassigns all priorities, producing a new uniformly random permutation without the $O(n)$ cost of Fisher-Yates on an array.
+
+\textbf{Skip List (Playlist Undo / Redo)}\\
+A Skip List is a probabilistic alternative to balanced trees using multiple layers of linked lists. Each element is promoted to the next layer with probability $1/2$, creating express lanes that enable $O(\log n)$ expected search by skipping over intermediate nodes. In MusicDS the Skip List stores version snapshots of each playlist keyed by a global version counter. When the user clicks ``Undo Last Action,'' the latest version is popped and the playlist is restored from the previous snapshot.
+
+% ============================================================================
+%                              STEPS
+% ============================================================================
+
+\textbf{Steps:}
+
+\textbf{Step 1 --- Data Loading}\\
+The C++ backend starts by calling \texttt{loadAllData()}, which reads \texttt{musicds\_data.json} line by line using the nlohmann/json library. Each user record is parsed into a JSON object containing username, password hash, and selected genres. The B+ Tree is populated by inserting each user by username. For each user, a \texttt{UserData} struct is created containing a map of playlist names to Doubly Linked List instances, a Bloom Filter initialised with $m = 2048$ and $k = 3$, and a Splay Tree for history. All playlists are restored by iterating the persisted song arrays and calling \texttt{pushBack} on the corresponding DLL. The collaborative queue is restored into the Pairing Heap. After loading, a summary is printed confirming the number of users and playlists restored.
+
+\textbf{Step 2 --- Structure Construction}\\
+All 14 data structures are constructed from the loaded dataset in a single pass. Every user is inserted into the B+ Tree using their username as the key. Their preferences are inserted into the AVL Tree. Each playlist becomes a Doubly Linked List instance stored in the user's \texttt{UserData} map. Liked song \texttt{trackId}s are hashed into the Bloom Filter. The Patricia Trie and Suffix Array are populated when the frontend sends the first batch of songs via \texttt{/api/search/index-compressed} and \texttt{/api/lyrics/index} respectively. The Fibonacci Heap, Red-Black Tree, Pairing Heap, Binomial Heap, Leftist Tree, and Treap are populated on-demand as users interact with recommendations, charts, voting, downloads, priority queue, and shuffle features.
+
+\textbf{Step 3 --- Module 1, B+ Tree Authentication}\\
+A signup request sends a POST to \texttt{/api/auth/signup} with username and password. The backend validates minimum lengths (username $\geq$ 3, password $\geq$ 4), checks if the username already exists via B+ Tree search, hashes the password, and inserts the new user record. Login sends a POST to \texttt{/api/auth/login}; the B+ Tree retrieves the stored record by username in $O(\log n)$ and compares password hashes. The response excludes the password hash for security.
+
+\textbf{Step 4 --- Module 2, AVL Tree Preferences}\\
+A POST to \texttt{/api/preferences} stores user settings (selected genres, volume) into the AVL Tree keyed by username. The tree rebalances via single or double rotations after each insert. A GET to \texttt{/api/preferences/\{userId\}} retrieves preferences in guaranteed $O(\log n)$ worst-case time. The selected genres are also synced to the B+ Tree user record for persistence.
+
+\textbf{Step 5 --- Module 3, Patricia Trie and Suffix Array Search}\\
+When the frontend loads songs from the iTunes API, it indexes them into both the Patricia Trie and the Suffix Array via POST requests. The Patricia Trie indexes song titles and artist names for prefix autocomplete. A GET to \texttt{/api/search/autocomplete-compressed?q=love} traverses the compressed trie from the root, matching the query character by character against edge labels, and collects all songs in the matching subtree. The Suffix Array handles substring queries via \texttt{/api/lyrics/search?q=night}, performing binary search on the sorted suffix array to find all songs containing the substring anywhere in the title or artist name.
+
+\textbf{Step 6 --- Module 4, Playlist Operations (DLL + Skip List)}\\
+Creating a playlist via POST to \texttt{/api/playlists/create} allocates a new DLL and initialises a Skip List with an empty snapshot at version 1. Adding a song calls \texttt{pushBack} on the DLL and inserts a new version snapshot into the Skip List. Removing a song calls \texttt{remove} on the DLL and records another snapshot. Clicking ``Undo Last Action'' calls \texttt{popLatest()} on the Skip List, which removes the current version and restores the playlist from the previous snapshot by reconstructing the DLL from the stored JSON array.
+
+\textbf{Step 7 --- Module 5, Bloom Filter + DLL Liked Songs}\\
+Toggling a like on a song sends a POST to \texttt{/api/liked/toggle}. The backend first checks if the song exists in the liked DLL via \texttt{has(trackId)}. If it exists, it is removed (unliked). If not, it is appended via \texttt{pushBack} and the \texttt{trackId} is hashed into the Bloom Filter. Batch checking whether songs are liked uses the Bloom Filter for a fast $O(1)$ probabilistic check; if the filter says ``possibly yes,'' a secondary DLL \texttt{has()} confirms, eliminating false positives.
+
+\textbf{Step 8 --- Module 6, Splay Tree History}\\
+Playing a song sends a POST to \texttt{/api/history/record} with the username and song. The backend inserts the song into the user's per-user Splay Tree, which splays the node to the root. Retrieving recent history via GET returns songs in reverse insertion order. Repeatedly played songs remain at the root due to splaying, demonstrating temporal locality.
+
+\textbf{Step 9 --- Module 7, Heaps and Queues}\\
+The Fibonacci Heap powers recommendations: songs are inserted with a base score plus a genre boost, and \texttt{getTopRecommendations(limit)} extracts the top-$k$ by repeatedly calling \texttt{extractMax}. The Pairing Heap powers collaborative voting: each vote calls \texttt{addVote(trackId)} which internally calls decrease-key (increase priority). The Binomial Heap manages the download queue with priority-based extraction. The Leftist Tree manages the priority playback queue, supporting $O(\log n)$ merge when combining queues.
+
+\textbf{Step 10 --- Module 8, Red-Black Tree Top Charts}\\
+Each time a song is played, a POST to \texttt{/api/charts/increment} increments its play count in the Red-Black Tree. The tree rebalances using colour flips and at most 2 rotations. \texttt{getTopCharts(limit)} performs a reverse in-order traversal to return the most-played songs globally.
+
+\textbf{Step 11 --- Module 9, Treap Shuffle}\\
+Songs are inserted into the Treap with a random heap priority. \texttt{getShuffle(limit)} performs an in-order traversal, which due to the random priorities produces a uniformly random permutation. \texttt{reRandomize()} extracts all songs, reassigns random priorities, and re-inserts them, generating a fresh shuffle order in $O(n \log n)$ expected time.
+
+\textbf{Step 12 --- Web Interface Boot}\\
+When \texttt{localhost:3000} is opened, the Next.js app loads the React frontend. The \texttt{MusicProvider} context initialises by fetching songs from the iTunes API, indexing them into the Patricia Trie and Suffix Array, and loading the user's playlists, liked songs, and preferences from the C++ backend. The audio player, search bar, sidebar, and song grids are rendered. All 14 modules are live and interactive immediately. The Next.js API route at \texttt{app/api/backend/[...path]/route.ts} proxies all requests to the C++ backend on port 8080.
+
+\textbf{Step 13 --- Persistence}\\
+Every mutation (signup, playlist change, like toggle, vote) calls \texttt{saveAllData()}, which serialises all user records from the B+ Tree, all playlists from the DLL maps, and the collaborative queue from the Pairing Heap into \texttt{musicds\_data.json}. On restart, \texttt{loadAllData()} restores the complete state, ensuring zero data loss across sessions.
+
+% ============================================================================
+%                         COMPLEXITY TABLE
+% ============================================================================
+
+\vspace{0.5cm}
+
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{} p{4.5cm} p{4.5cm} p{4.5cm} @{}}
+\textbf{Data Structure} & \textbf{Operation} & \textbf{Complexity} \\[6pt]
+
+B+ Tree & Insert & $O(\log n)$ \\
+        & Search & $O(\log n)$ \\
+        & Range Scan & $O(\log n + k)$ \\[6pt]
+
+AVL Tree & Insert & $O(\log n)$ \\
+         & Search & $O(\log n)$ \\
+         & Delete & $O(\log n)$ \\[6pt]
+
+Doubly Linked List & Insert (head/tail) & $O(1)$ \\
+                   & Delete (given ptr) & $O(1)$ \\
+                   & Search & $O(n)$ \\[6pt]
+
+Bloom Filter & Add & $O(k)$ \\
+             & Query & $O(k)$ \\
+             & Delete & N/A \\[6pt]
+
+Splay Tree & Insert & $O(\log n)$ amortised \\
+           & Splay Access & $O(\log n)$ amortised \\
+           & Delete & $O(\log n)$ amortised \\[6pt]
+
+Patricia Trie & Insert & $O(k)$ \\
+              & Prefix Search & $O(k)$ \\
+              & Autocomplete & $O(k + r)$ \\[6pt]
+
+Suffix Array & Build & $O(n \log n)$ \\
+             & Substring Search & $O(m \log n)$ \\[6pt]
+
+Leftist Tree & Insert & $O(\log n)$ \\
+             & Extract-Max & $O(\log n)$ \\
+             & Merge & $O(\log n)$ \\[6pt]
+
+Binomial Heap & Insert & $O(\log n)$ \\
+              & Extract-Max & $O(\log n)$ \\
+              & Merge & $O(\log n)$ \\[6pt]
+
+Pairing Heap & Insert & $O(1)$ amortised \\
+             & Decrease-Key & $O(1)$ amortised \\
+             & Extract-Max & $O(\log n)$ amortised \\[6pt]
+
+Fibonacci Heap & Insert & $O(1)$ amortised \\
+               & Extract-Max & $O(\log n)$ amortised \\
+               & Decrease-Key & $O(1)$ amortised \\[6pt]
+
+Red-Black Tree & Insert & $O(\log n)$ \\
+               & Search & $O(\log n)$ \\
+               & Delete & $O(\log n)$ \\[6pt]
+
+Treap & Insert & $O(\log n)$ expected \\
+      & Search & $O(\log n)$ expected \\
+      & Shuffle & $O(n \log n)$ expected \\[6pt]
+
+Skip List & Insert & $O(\log n)$ expected \\
+          & Search & $O(\log n)$ expected \\
+          & Delete & $O(\log n)$ expected \\
+\end{tabular}
+
+\vspace{0.5cm}
+
+$n$ = number of elements\\
+$k$ = number of hash functions (Bloom Filter) or query/key length (Tries)\\
+$m$ = pattern length\\
+$r$ = number of results returned
+
+% ============================================================================
+%                            CONCLUSION
+% ============================================================================
+
+\vspace{0.5cm}
+
+\textbf{Conclusion}
+
+MusicDS demonstrates that the selection of data structures is not a generic decision but a problem-specific one. Each of the 14 data structures implemented in this project solves a problem that general-purpose alternatives handle inefficiently --- the B+ Tree outperforms hash maps for ordered credential retrieval, the Patricia Trie outperforms linear scan for prefix autocomplete, the Suffix Array outperforms brute-force for substring search, the Fibonacci Heap outperforms standard heaps in insert-heavy recommendation workloads, the Pairing Heap outperforms binary heaps for real-time voting with frequent decrease-key operations, the Red-Black Tree outperforms AVL Trees for volatile play count tracking by requiring fewer rotations, the Bloom Filter reduces membership-check latency from $O(n)$ to $O(1)$ probabilistic, the Splay Tree exploits temporal locality for recently-played history, and the Skip List provides versioned undo without the complexity of persistent data structures. The two web interfaces --- a glassmorphism React frontend and a zero-dependency C++ HTTP backend --- demonstrate that these structures are not purely academic; they power real interactive queries at sub-millisecond speeds.
+
+\textbf{Future Scope:} The engine could be extended to support multi-threaded request handling using a thread pool, WebSocket-based real-time updates for the collaborative voting queue, cross-platform deployment using POSIX sockets, and integration with a persistent key-value store such as RocksDB for larger-than-memory datasets.
+
+\end{document}

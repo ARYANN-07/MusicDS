@@ -45,7 +45,7 @@ struct HttpRequest {
 };
 
 struct HttpResponse {
-    int         status      = 200;
+    int  status      = 200;
     std::string contentType = "application/json";
     std::string body;
 

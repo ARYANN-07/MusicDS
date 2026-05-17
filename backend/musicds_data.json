@@ -1,5 +1,42 @@
 {
-  "collabQueue": [],
+  "collabQueue": [
+    {
+      "_votes": 1,
+      "artistName": "Kendrick Lamar",
+      "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/50/c2/cc/50c2cc95-3658-9417-0d4b-831abde44ba1/24UM1IM28978.rgb.jpg/400x400bb.jpg",
+      "collectionName": "GNX",
+      "playCount": 0,
+      "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e0/1d/98/e01d9881-0953-f0ed-b03d-3a4bd6f3c769/mzaf_8283505998481315852.plus.aac.p.m4a",
+      "primaryGenreName": "Hip-Hop/Rap",
+      "trackId": 1781270323,
+      "trackName": "luther",
+      "trackTimeMillis": 177599
+    },
+    {
+      "_votes": 1,
+      "artistName": "Kendrick Lamar",
+      "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/31/3a/3f/313a3fbc-bb8f-80c7-b5a2-e226869a38cd/24UMGIM51924.rgb.jpg/400x400bb.jpg",
+      "collectionName": "Not Like Us - Single",
+      "playCount": 0,
+      "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b6/6b/8c/b66b8c42-8c82-242b-4ef1-3655d19ac1aa/mzaf_1950801191699299821.plus.aac.p.m4a",
+      "primaryGenreName": "Hip-Hop/Rap",
+      "trackId": 1781353929,
+      "trackName": "Not Like Us",
+      "trackTimeMillis": 274192
+    },
+    {
+      "_votes": 1,
+      "artistName": "The Weeknd",
+      "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/40/cd/1a/40cd1a65-7948-eb96-74c6-1c4b3497456c/15UMGIM36513.rgb.jpg/400x400bb.jpg",
+      "collectionName": "Beauty Behind the Madness",
+      "playCount": 0,
+      "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/1e/cd/50/1ecd50b2-343b-c570-d976-7e089e56e0a5/mzaf_7391966967236748397.plus.aac.p.m4a",
+      "primaryGenreName": "R&B/Soul",
+      "trackId": 1440826389,
+      "trackName": "Can't Feel My Face",
+      "trackTimeMillis": 213525
+    }
+  ],
   "playlists": {
     "patil": {
       "__liked__": [
@@ -226,6 +263,17 @@
           "trackId": 1200868874,
           "trackName": "Young Dumb & Broke",
           "trackTimeMillis": 202535
+        },
+        {
+          "artistName": "Frank Sinatra",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/3f/c2/45/3fc2454d-f1ef-8cef-a1f3-0c5a6d751e0a/19UMGIM69266.rgb.jpg/400x400bb.jpg",
+          "collectionName": "My Way (50th Anniversary Edition)",
+          "playCount": 0,
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/52/5d/26/525d26d3-47c8-e895-2ecb-b450c237b66c/mzaf_5951957958540383333.plus.aac.p.m4a",
+          "primaryGenreName": "Jazz",
+          "trackId": 1475517693,
+          "trackName": "My Way",
+          "trackTimeMillis": 275973
         }
       ],
       "fun": [
@@ -285,9 +333,9 @@
           "trackTimeMillis": 210368
         },
         {
-          "artistName": "Taylor Swift",
-          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/49/3d/ab/493dab54-f920-9043-6181-80993b8116c9/19UMGIM53909.rgb.jpg/400x400bb.jpg",
-          "collectionName": "Lover",
+          "artistName": "Frank Sinatra",
+          "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music113/v4/3f/c2/45/3fc2454d-f1ef-8cef-a1f3-0c5a6d751e0a/19UMGIM69266.rgb.jpg/400x400bb.jpg",
+          "collectionName": "My Way (50th Anniversary Edition)",
           "playCount": 0,
           "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e8/80/4f/e8804fa1-6118-74fd-4602-b96969ebef41/mzaf_5457103975229379192.plus.aac.p.m4a",
           "primaryGenreName": "Pop",
@@ -300,7 +348,7 @@
           "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/d7/ec/41/d7ec4146-37ff-5827-0934-5318c8834ed3/cover_10316549.jpg/400x400bb.jpg",
           "collectionName": "Eternal Twilight: Piano Music",
           "playCount": 0,
-          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/da/55/37/da553700-2eb1-26c0-98a9-fdad37ba869e/mzaf_15660640025393044275.plus.aac.p.m4a",
+          "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/52/5d/26/525d26d3-47c8-e895-2ecb-b450c237b66c/mzaf_5951957958540383333.plus.aac.p.m4a",
           "primaryGenreName": "Jazz",
           "trackId": 1766089238,
           "trackName": "Jazz Piano",
@@ -324,9 +372,9 @@
           "playCount": 0,
           "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/b6/6b/8c/b66b8c42-8c82-242b-4ef1-3655d19ac1aa/mzaf_1950801191699299821.plus.aac.p.m4a",
           "primaryGenreName": "Hip-Hop/Rap",
-          "trackId": 1781353929,
-          "trackName": "Not Like Us",
-          "trackTimeMillis": 274192
+          "trackId": 1475517693,
+          "trackName": "My Way",
+          "trackTimeMillis": 275973
         }
       ]
     }

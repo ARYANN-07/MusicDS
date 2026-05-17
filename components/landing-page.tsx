@@ -46,7 +46,7 @@ export function LandingPage() {
         <div className="text-center max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary text-sm text-muted-foreground mb-8">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            Powered by 8 Hand-Coded Data Structures
+            Powered by 14 Hand-Coded Data Structures
           </div>
 
           <h1 className="text-5xl md:text-7xl font-extrabold text-foreground tracking-tight leading-tight mb-6">
@@ -55,7 +55,7 @@ export function LandingPage() {
           </h1>
 
           <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed">
-            Experience a Spotify-like music app where every feature — from search to recommendations — 
+            Experience a highly efficient music app where every feature — from search to recommendations — 
             is built from scratch using advanced data structures.
           </p>
 

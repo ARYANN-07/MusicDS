@@ -152,6 +152,30 @@ data-structures/avl_tree.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/avl_tree.cpp.s
 .PHONY : data-structures/avl_tree.cpp.s
 
+data-structures/binomial_heap.obj: data-structures/binomial_heap.cpp.obj
+.PHONY : data-structures/binomial_heap.obj
+
+# target to build an object file
+data-structures/binomial_heap.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/binomial_heap.cpp.obj
+.PHONY : data-structures/binomial_heap.cpp.obj
+
+data-structures/binomial_heap.i: data-structures/binomial_heap.cpp.i
+.PHONY : data-structures/binomial_heap.i
+
+# target to preprocess a source file
+data-structures/binomial_heap.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/binomial_heap.cpp.i
+.PHONY : data-structures/binomial_heap.cpp.i
+
+data-structures/binomial_heap.s: data-structures/binomial_heap.cpp.s
+.PHONY : data-structures/binomial_heap.s
+
+# target to generate assembly for a file
+data-structures/binomial_heap.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/binomial_heap.cpp.s
+.PHONY : data-structures/binomial_heap.cpp.s
+
 data-structures/bloom_filter.obj: data-structures/bloom_filter.cpp.obj
 .PHONY : data-structures/bloom_filter.obj
 
@@ -248,6 +272,78 @@ data-structures/fibonacci_heap.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/fibonacci_heap.cpp.s
 .PHONY : data-structures/fibonacci_heap.cpp.s
 
+data-structures/leftist_tree.obj: data-structures/leftist_tree.cpp.obj
+.PHONY : data-structures/leftist_tree.obj
+
+# target to build an object file
+data-structures/leftist_tree.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/leftist_tree.cpp.obj
+.PHONY : data-structures/leftist_tree.cpp.obj
+
+data-structures/leftist_tree.i: data-structures/leftist_tree.cpp.i
+.PHONY : data-structures/leftist_tree.i
+
+# target to preprocess a source file
+data-structures/leftist_tree.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/leftist_tree.cpp.i
+.PHONY : data-structures/leftist_tree.cpp.i
+
+data-structures/leftist_tree.s: data-structures/leftist_tree.cpp.s
+.PHONY : data-structures/leftist_tree.s
+
+# target to generate assembly for a file
+data-structures/leftist_tree.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/leftist_tree.cpp.s
+.PHONY : data-structures/leftist_tree.cpp.s
+
+data-structures/pairing_heap.obj: data-structures/pairing_heap.cpp.obj
+.PHONY : data-structures/pairing_heap.obj
+
+# target to build an object file
+data-structures/pairing_heap.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/pairing_heap.cpp.obj
+.PHONY : data-structures/pairing_heap.cpp.obj
+
+data-structures/pairing_heap.i: data-structures/pairing_heap.cpp.i
+.PHONY : data-structures/pairing_heap.i
+
+# target to preprocess a source file
+data-structures/pairing_heap.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/pairing_heap.cpp.i
+.PHONY : data-structures/pairing_heap.cpp.i
+
+data-structures/pairing_heap.s: data-structures/pairing_heap.cpp.s
+.PHONY : data-structures/pairing_heap.s
+
+# target to generate assembly for a file
+data-structures/pairing_heap.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/pairing_heap.cpp.s
+.PHONY : data-structures/pairing_heap.cpp.s
+
+data-structures/patricia_trie.obj: data-structures/patricia_trie.cpp.obj
+.PHONY : data-structures/patricia_trie.obj
+
+# target to build an object file
+data-structures/patricia_trie.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/patricia_trie.cpp.obj
+.PHONY : data-structures/patricia_trie.cpp.obj
+
+data-structures/patricia_trie.i: data-structures/patricia_trie.cpp.i
+.PHONY : data-structures/patricia_trie.i
+
+# target to preprocess a source file
+data-structures/patricia_trie.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/patricia_trie.cpp.i
+.PHONY : data-structures/patricia_trie.cpp.i
+
+data-structures/patricia_trie.s: data-structures/patricia_trie.cpp.s
+.PHONY : data-structures/patricia_trie.s
+
+# target to generate assembly for a file
+data-structures/patricia_trie.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/patricia_trie.cpp.s
+.PHONY : data-structures/patricia_trie.cpp.s
+
 data-structures/red_black_tree.obj: data-structures/red_black_tree.cpp.obj
 .PHONY : data-structures/red_black_tree.obj
 
@@ -272,6 +368,30 @@ data-structures/red_black_tree.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/red_black_tree.cpp.s
 .PHONY : data-structures/red_black_tree.cpp.s
 
+data-structures/skip_list.obj: data-structures/skip_list.cpp.obj
+.PHONY : data-structures/skip_list.obj
+
+# target to build an object file
+data-structures/skip_list.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/skip_list.cpp.obj
+.PHONY : data-structures/skip_list.cpp.obj
+
+data-structures/skip_list.i: data-structures/skip_list.cpp.i
+.PHONY : data-structures/skip_list.i
+
+# target to preprocess a source file
+data-structures/skip_list.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/skip_list.cpp.i
+.PHONY : data-structures/skip_list.cpp.i
+
+data-structures/skip_list.s: data-structures/skip_list.cpp.s
+.PHONY : data-structures/skip_list.s
+
+# target to generate assembly for a file
+data-structures/skip_list.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/skip_list.cpp.s
+.PHONY : data-structures/skip_list.cpp.s
+
 data-structures/splay_tree.obj: data-structures/splay_tree.cpp.obj
 .PHONY : data-structures/splay_tree.obj
 
@@ -295,6 +415,54 @@ data-structures/splay_tree.s: data-structures/splay_tree.cpp.s
 data-structures/splay_tree.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/splay_tree.cpp.s
 .PHONY : data-structures/splay_tree.cpp.s
+
+data-structures/suffix_array.obj: data-structures/suffix_array.cpp.obj
+.PHONY : data-structures/suffix_array.obj
+
+# target to build an object file
+data-structures/suffix_array.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/suffix_array.cpp.obj
+.PHONY : data-structures/suffix_array.cpp.obj
+
+data-structures/suffix_array.i: data-structures/suffix_array.cpp.i
+.PHONY : data-structures/suffix_array.i
+
+# target to preprocess a source file
+data-structures/suffix_array.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/suffix_array.cpp.i
+.PHONY : data-structures/suffix_array.cpp.i
+
+data-structures/suffix_array.s: data-structures/suffix_array.cpp.s
+.PHONY : data-structures/suffix_array.s
+
+# target to generate assembly for a file
+data-structures/suffix_array.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/suffix_array.cpp.s
+.PHONY : data-structures/suffix_array.cpp.s
+
+data-structures/treap.obj: data-structures/treap.cpp.obj
+.PHONY : data-structures/treap.obj
+
+# target to build an object file
+data-structures/treap.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/treap.cpp.obj
+.PHONY : data-structures/treap.cpp.obj
+
+data-structures/treap.i: data-structures/treap.cpp.i
+.PHONY : data-structures/treap.i
+
+# target to preprocess a source file
+data-structures/treap.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/treap.cpp.i
+.PHONY : data-structures/treap.cpp.i
+
+data-structures/treap.s: data-structures/treap.cpp.s
+.PHONY : data-structures/treap.s
+
+# target to generate assembly for a file
+data-structures/treap.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/data-structures/treap.cpp.s
+.PHONY : data-structures/treap.cpp.s
 
 data-structures/trie.obj: data-structures/trie.cpp.obj
 .PHONY : data-structures/trie.obj
@@ -356,6 +524,9 @@ help:
 	@echo ... data-structures/avl_tree.obj
 	@echo ... data-structures/avl_tree.i
 	@echo ... data-structures/avl_tree.s
+	@echo ... data-structures/binomial_heap.obj
+	@echo ... data-structures/binomial_heap.i
+	@echo ... data-structures/binomial_heap.s
 	@echo ... data-structures/bloom_filter.obj
 	@echo ... data-structures/bloom_filter.i
 	@echo ... data-structures/bloom_filter.s
@@ -368,12 +539,30 @@ help:
 	@echo ... data-structures/fibonacci_heap.obj
 	@echo ... data-structures/fibonacci_heap.i
 	@echo ... data-structures/fibonacci_heap.s
+	@echo ... data-structures/leftist_tree.obj
+	@echo ... data-structures/leftist_tree.i
+	@echo ... data-structures/leftist_tree.s
+	@echo ... data-structures/pairing_heap.obj
+	@echo ... data-structures/pairing_heap.i
+	@echo ... data-structures/pairing_heap.s
+	@echo ... data-structures/patricia_trie.obj
+	@echo ... data-structures/patricia_trie.i
+	@echo ... data-structures/patricia_trie.s
 	@echo ... data-structures/red_black_tree.obj
 	@echo ... data-structures/red_black_tree.i
 	@echo ... data-structures/red_black_tree.s
+	@echo ... data-structures/skip_list.obj
+	@echo ... data-structures/skip_list.i
+	@echo ... data-structures/skip_list.s
 	@echo ... data-structures/splay_tree.obj
 	@echo ... data-structures/splay_tree.i
 	@echo ... data-structures/splay_tree.s
+	@echo ... data-structures/suffix_array.obj
+	@echo ... data-structures/suffix_array.i
+	@echo ... data-structures/suffix_array.s
+	@echo ... data-structures/treap.obj
+	@echo ... data-structures/treap.i
+	@echo ... data-structures/treap.s
 	@echo ... data-structures/trie.obj
 	@echo ... data-structures/trie.i
 	@echo ... data-structures/trie.s

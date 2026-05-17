@@ -84,12 +84,12 @@ clean: CMakeFiles/musicds-backend.dir/clean
 CMakeFiles/musicds-backend.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\Aryan_\Desktop\MusicDS-V\backend\build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Built target musicds-backend"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\Aryan_\Desktop\MusicDS-V\backend\build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 "Built target musicds-backend"
 .PHONY : CMakeFiles/musicds-backend.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/musicds-backend.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Aryan_\Desktop\MusicDS-V\backend\build\CMakeFiles 10
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Aryan_\Desktop\MusicDS-V\backend\build\CMakeFiles 17
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/musicds-backend.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Aryan_\Desktop\MusicDS-V\backend\build\CMakeFiles 0
 .PHONY : CMakeFiles/musicds-backend.dir/rule
@@ -101,7 +101,7 @@ musicds-backend: CMakeFiles/musicds-backend.dir/rule
 # codegen rule for target.
 CMakeFiles/musicds-backend.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\musicds-backend.dir\build.make CMakeFiles/musicds-backend.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\Aryan_\Desktop\MusicDS-V\backend\build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Finished codegen for target musicds-backend"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=C:\Users\Aryan_\Desktop\MusicDS-V\backend\build\CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 "Finished codegen for target musicds-backend"
 .PHONY : CMakeFiles/musicds-backend.dir/codegen
 
 # clean rule for target.

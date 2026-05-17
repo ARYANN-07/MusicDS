@@ -104,3 +104,46 @@ void SkipList::clear() {
     count_ = 0;
     latestVersion_ = -1;
 }
+
+json SkipList::popLatest() {
+    if (count_ <= 0) return json::array();
+
+    std::vector<SkipNode*> update(maxLevel_ + 1, nullptr);
+    SkipNode* curr = header_;
+
+    for (int i = currentLevel_; i >= 0; i--) {
+        while (curr->forward[i] && curr->forward[i]->version < latestVersion_) {
+            curr = curr->forward[i];
+        }
+        update[i] = curr;
+    }
+
+    curr = curr->forward[0];
+
+    if (curr && curr->version == latestVersion_) {
+        for (int i = 0; i <= currentLevel_; i++) {
+            if (update[i]->forward[i] != curr) break;
+            update[i]->forward[i] = curr->forward[i];
+        }
+        delete curr;
+        count_--;
+
+        while (currentLevel_ > 0 && header_->forward[currentLevel_] == nullptr) {
+            currentLevel_--;
+        }
+
+        latestVersion_ = -1;
+        SkipNode* temp = header_->forward[0];
+        json prevSnapshot = json::array();
+        while (temp) {
+            if (temp->version > latestVersion_) {
+                latestVersion_ = temp->version;
+                prevSnapshot = temp->snapshot;
+            }
+            temp = temp->forward[0];
+        }
+        return prevSnapshot;
+    }
+
+    return json::array();
+}
